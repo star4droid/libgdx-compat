@@ -253,6 +253,14 @@ Compat.theme.primary.set(Color.RED);                                // أو لو
 
 اختبارات `run-test.sh`: ‏`tour` (كل المكونات)، `inputs`، `rtl --rtl`، `idle`. تحتاج `xvfb` على لينكس.
 
+## إصدار نسخة جديدة
+
+الإصدارات تتم عبر workflow اسمه **Release** يعمل يدوياً فقط: **Actions ← Release ← Run workflow**، ثم أدخل رقم الإصدار (مثل `1.0.1`) وملاحظات اختيارية.
+
+يبني الـ jar والـ sources jar والـ APK، ويكتب ملاحظات الإصدار (نصك، والـ commits منذ الإصدار السابق، وجدول التنزيل)، ثم ينشئ الـ tag وينشر الإصدار بالملفات.
+
+لتوقيع الـ APK بمفتاحك أضف الأسرار `RELEASE_KEYSTORE_BASE64` و`RELEASE_KEYSTORE_PASSWORD` و`RELEASE_KEY_ALIAS` و`RELEASE_KEY_PASSWORD` من **Settings ← Secrets and variables ← Actions**؛ بدونها يُوقَّع بمفتاح debug.
+
 ## التوثيق
 
 موقع التوثيق الإنجليزي في مجلد `docs/` (يُولَّد من `docs-src/` عبر `python3 docs-src/build.py`) ومنشور على GitHub Pages.

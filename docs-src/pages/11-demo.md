@@ -54,6 +54,24 @@ Lines starting with `ASSERT` report checks, `PERF` lines report draw calls, fram
 ./gradlew :compat:publishToMavenLocal
 ```
 
+## Releasing a new version
+
+Releases are made by the **Release** workflow, which only runs when started by hand:
+**Actions → Release → Run workflow**, then enter the version (for example `1.0.1`), optional notes, and whether it is a pre-release.
+
+The workflow builds the library jar, the sources jar and the demo APK, writes release notes (your text, the commits since the previous tag, download table, JitPack snippet), creates the tag and publishes the release with the files attached. JitPack picks the new tag up automatically.
+
+To sign the APK with your own key (so each new APK installs over the previous one), add these repository secrets under **Settings → Secrets and variables → Actions**:
+
+| Secret | Value |
+|---|---|
+| `RELEASE_KEYSTORE_BASE64` | your `.jks` file encoded with `base64 -w0 release.jks` |
+| `RELEASE_KEYSTORE_PASSWORD` | keystore password |
+| `RELEASE_KEY_ALIAS` | key alias |
+| `RELEASE_KEY_PASSWORD` | key password |
+
+Without them the APK is signed with a debug key.
+
 ## Third-party assets
 
 | File | License |

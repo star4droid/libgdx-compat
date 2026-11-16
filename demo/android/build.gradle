@@ -7,8 +7,22 @@ android {
         applicationId 'com.star4droid.compat.demo'
         minSdk 21
         targetSdk 34
-        versionCode 1
-        versionName '1.0.0'
+        // the release workflow passes these; local builds use the defaults
+        versionCode((System.getenv('VERSION_CODE') ?: '1') as int)
+        versionName System.getenv('VERSION') ?: '1.0.0'
+    }
+    signingConfigs {
+        // Set the RELEASE_KEYSTORE_* secrets (see .github/workflows/release.yml) to sign with your own key, so a new
+        // APK installs over the previous one. Without them the release APK is signed with a debug key.
+        release {
+            def ks = System.getenv('RELEASE_KEYSTORE_FILE')
+            if (ks) {
+                storeFile file(ks)
+                storePassword System.getenv('RELEASE_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('RELEASE_KEY_ALIAS')
+                keyPassword System.getenv('RELEASE_KEY_PASSWORD')
+            }
+        }
     }
     sourceSets {
         main {
@@ -23,7 +37,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            signingConfig System.getenv('RELEASE_KEYSTORE_FILE') ? signingConfigs.release : signingConfigs.debug
         }
     }
 }
