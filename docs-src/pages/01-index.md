@@ -17,6 +17,8 @@ nav: Overview
 
 ## Why
 
+libgdx-compat was built for the UI of [Star2D](https://github.com/star4droid/Star2D), an Android 2D game engine, and is usable in any libGDX project.
+
 Scene2D gives you the building blocks, but making a bottom sheet that follows the finger, a recycled list of 100 000 rows, or a ViewPager with a tab indicator takes a lot of code. libgdx-compat packages those components with the touch behaviour, animations and sizing rules people expect from Android apps.
 
 - **Built on Scene2D.** Every component is a normal `Actor`, so it drops into any existing `Stage`.

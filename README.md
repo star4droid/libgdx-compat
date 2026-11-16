@@ -1,10 +1,86 @@
-# libgdx-compat
+<p align="center">
+  <img src="docs/images/favicon.svg" width="88" alt="libgdx-compat logo">
+</p>
 
-**English documentation:** https://star4droid.github.io/libgdx-compat/
+<h1 align="center">libgdx-compat</h1>
+
+<p align="center">
+  AppCompat-style Material 3 UI components for libGDX:<br>
+  bottom sheets, FABs, lists, grids, view pagers, dialogs, drawers and Android-style XML layouts.
+</p>
+
+<p align="center">
+  <a href="https://jitpack.io/#star4droid/libgdx-compat"><img src="https://jitpack.io/v/star4droid/libgdx-compat.svg" alt="JitPack"></a>
+  <a href="https://github.com/star4droid/libgdx-compat/releases"><img src="https://img.shields.io/github/v/release/star4droid/libgdx-compat?label=release" alt="Release"></a>
+  <a href="https://libgdx.com"><img src="https://img.shields.io/badge/libGDX-1.12.1%2B-E74A45" alt="libGDX 1.12.1+"></a>
+  <img src="https://img.shields.io/badge/Java-8-ED8B00?logo=openjdk&logoColor=white" alt="Java 8">
+  <img src="https://img.shields.io/badge/platforms-Android%20%7C%20Desktop-3DDC84" alt="Platforms: Android, Desktop">
+  <img src="https://img.shields.io/badge/RTL-Arabic%20ready-6750A4" alt="Arabic and RTL">
+  <a href="https://star4droid.github.io/libgdx-compat/"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-0A66C2" alt="Documentation"></a>
+  <a href="https://github.com/star4droid/Star2D"><img src="https://img.shields.io/badge/made%20for-Star2D-FFB300" alt="Made for Star2D"></a>
+</p>
+
+<p align="center">
+  <a href="https://star4droid.github.io/libgdx-compat/"><b>Documentation</b></a> ·
+  <a href="https://star4droid.github.io/libgdx-compat/getting-started.html"><b>Getting started</b></a> ·
+  <a href="https://github.com/star4droid/libgdx-compat/releases"><b>Download the demo APK</b></a>
+</p>
+
+<p align="center">
+  <img src="docs/images/01_widgets.png" width="200" alt="Widgets">
+  <img src="docs/images/05_list.png" width="200" alt="RecyclerView list">
+  <img src="docs/images/14_sheet_expanded.png" width="200" alt="Bottom sheet">
+  <img src="docs/images/16_dialog.png" width="200" alt="Dialog">
+</p>
+<p align="center">
+  <img src="docs/images/10_grid.png" width="200" alt="Grid">
+  <img src="docs/images/17_drawer.png" width="200" alt="Navigation drawer">
+  <img src="docs/images/18_dark.png" width="200" alt="Dark theme">
+  <img src="docs/images/rtl_04_drawer.png" width="200" alt="Right-to-left mode">
+</p>
+
+## Why this library
+
+libgdx-compat was built for the UI of **[Star2D](https://github.com/star4droid/Star2D)**, my Android 2D game engine. libGDX's Scene2D has no ready-made bottom sheets, floating action buttons, view pagers, recycled lists or grids, so this library brings those components, with the touch behaviour and animations of their Android counterparts, to any libGDX project.
+
+## Features
+
+- Built on Scene2D: every component is a normal `Actor` that drops into any `Stage`.
+- One module, plain Java 8: Android, desktop and Linux. Tested with libGDX 1.12.1 and 1.14.2.
+- No skin, no images, no custom shader: shapes, shadows and ripples are drawn from code.
+- Fast: a typical screen renders in 1–4 draw calls, and lists only create the visible rows.
+- Arabic and RTL: letter shaping, bidirectional text and fully mirrored layouts.
+- XML layouts with Android's tag and attribute names.
+
+```groovy
+repositories { maven { url 'https://jitpack.io' } }
+dependencies { api 'com.github.star4droid:libgdx-compat:1.0.0' }
+```
+
+```java
+Compat.init();
+Stage stage = Compat.createStage();
+
+LinearLayout root = LinearLayout.vertical().padding(Compat.dp(16)).spacing(Compat.dp(12));
+root.setFillParent(true);
+root.add(new TextView("Hello", Typography.HEADLINE_SMALL));
+root.add(new Button("Show sheet").onClick(() -> BottomSheet.show(stage, sheetContent)));
+stage.addActor(root);
+```
+
+Full guide with every component: **https://star4droid.github.io/libgdx-compat/**
+
+## Acknowledgements
+
+Thanks to **Claude Fable 5.2** by [Anthropic](https://www.anthropic.com) for helping me design, build and test this library.
+
+---
+
+## بالعربية
 
 مكتبة واجهات لـ libGDX على نمط AppCompat / Material 3: أزرار، FAB، حقول نص، RecyclerView (قائمة وشبكة)، ViewPager، TabLayout، BottomSheet، Dialog، Snackbar، Drawer، Toolbar، BottomNavigation، Navigator، وتصميم الواجهات عبر XML بنفس أسماء أندرويد.
 
-![preview](docs/preview.png)
+صُنعت المكتبة لتُستعمل في واجهات محرك الألعاب [Star2D](https://github.com/star4droid/Star2D).
 
 - تعمل فوق Scene2D العادي (`Stage` / `Actor`)، فتدخل في أي مشروع libGDX موجود.
 - Java 8 خالصة في موديول واحد: أندرويد، سطح المكتب، لينكس.
@@ -12,7 +88,7 @@
 - العربية مدعومة: تشكيل الحروف، الاتجاه RTL، الحركات، وقلب الواجهة كاملة.
 - بدون صور ولا Skin ولا شيدر خاص: كل الأشكال تُرسم من الكود.
 
-## التثبيت
+### التثبيت
 
 **الأسهل:** انسخ `dist/libgdx-compat-1.0.0.jar` إلى مجلد `libs` في موديول core:
 
@@ -36,7 +112,7 @@ dependencies { api 'com.github.star4droid:libgdx-compat:1.0.0' }
 
 إذا فعّلت `minifyEnabled` فقواعد R8 اللازمة موجودة داخل الـ jar وتُطبَّق تلقائياً.
 
-## البدء السريع
+### البدء السريع
 
 ```java
 public class MyGame extends ApplicationAdapter {
@@ -73,7 +149,7 @@ public class MyGame extends ApplicationAdapter {
 
 المقاسات بالبكسل الحقيقي؛ استعمل `Compat.dp(16)` و`Compat.sp(14)` دائماً. إن كنت تستعمل Viewport بمقاس افتراضي ثابت فضع `config.density = عرض_الـstage / 360f`.
 
-## التخطيط
+### التخطيط
 
 | الصنف | الوصف |
 |---|---|
@@ -93,13 +169,13 @@ box.add(child).matchWidth().height(dp(56));
 
 كل `ViewGroup` له: `setPadding`، `setBackground`، `setCornerRadius`، `setStroke`، `setElevation`، `setOnClick` (مع Ripple).
 
-## العناصر
+### العناصر
 
 `TextView`، `Button` (‏FILLED / TONAL / OUTLINED / TEXT / ELEVATED)، `IconButton`، `Fab` (صغير / عادي / كبير / ممتد مع `extend()` و`shrink()` و`show()` و`hide()`)، `EditText` (‏OUTLINED / FILLED، عنوان عائم، أيقونات، خطأ، كلمة مرور، تحديد ونسخ ولصق)، `CheckBox`، `RadioButton` + `RadioGroup`، `Switch`، `Slider`، `Chip`، `ProgressBar` (خطي ودائري)، `ImageView` (مع زوايا دائرية و`CENTER_CROP`)، `IconView`، `Divider`، `Space`.
 
 الأيقونات: خط Material Icons مضمَّن (~2200 أيقونة). الشائع منها ثوابت في `Icons` والباقي بالاسم: `Icons.get("shopping_cart")`.
 
-## القوائم والشبكات
+### القوائم والشبكات
 
 ```java
 RecyclerView list = new RecyclerView();
@@ -117,7 +193,7 @@ list.setOnEndReached(() -> loadMore());
 
 للتحكم الكامل (أنواع صفوف متعددة، ارتفاعات مختلفة) ورِّث `RecyclerView.Adapter` كما في أندرويد: `getItemCount`، `getItemViewType`، `onCreateViewHolder`، `onBindViewHolder`، واختيارياً `getItemSize`.
 
-## الصفحات والتبويبات
+### الصفحات والتبويبات
 
 ```java
 ViewPager pager = new ViewPager();
@@ -129,7 +205,7 @@ tabs.addTab("Settings", Icons.SETTINGS);
 tabs.setupWithViewPager(pager);
 ```
 
-## الطبقات العلوية
+### الطبقات العلوية
 
 ```java
 BottomSheet sheet = new BottomSheet(content);     // يُسحب بالإصبع: مخفي / نصف / كامل
@@ -161,7 +237,7 @@ nav.push(new HomeScreen());     // class HomeScreen extends Navigator.Screen { A
 
 زر الرجوع (BACK في أندرويد، ESC في الحاسوب) يغلق أعلى طبقة مفتوحة ثم يرجع شاشة ثم يخرج من التطبيق.
 
-## الواجهات عبر XML
+### الواجهات عبر XML
 
 نفس وسوم وخصائص أندرويد، والبادئات `android:` و`app:` اختيارية:
 
@@ -190,7 +266,7 @@ public void onSend () { ... }          // أو onSend(Actor view)
 
 **وسم خاص بك:** `LayoutInflater.register("MyView", (attrs, inflater) -> new MyView(attrs.string("title")));`
 
-## الثيم
+### الثيم
 
 `Compat.theme` كائن واحد بألوان Material 3. تغييره يُعيد تلوين كل الواجهة فوراً دون إعادة بنائها:
 
@@ -202,13 +278,13 @@ Compat.theme.primary.set(Color.RED);                                // أو لو
 
 أحجام النصوص في `Typography.SIZE`، ونصف أقطار الزوايا في `theme.cornerMedium` وأخواتها. الخطوط تُستبدل عبر `Compat.Config` (‏`regularFont`، `mediumFont`).
 
-## العربية و RTL
+### العربية و RTL
 
 - النص العربي يُشكَّل ويُرتَّب تلقائياً في كل عنصر، مع خلط الإنجليزية والأرقام.
 - `config.rtl = true` (أو `Compat.setRtl(true)` قبل بناء الواجهة) يقلب كل شيء: ترتيب الصفوف، الهوامش، الدرج، التبويبات، اتجاه السحب.
 - أي خط بديل للعربية يجب أن يحتوي جدول Presentation Forms (‏U+FE70–U+FEFF)، مثل الخط المضمَّن IBM Plex Sans Arabic.
 
-## الأداء
+### الأداء
 
 ما فعلته المكتبة:
 
@@ -234,7 +310,7 @@ Compat.theme.primary.set(Color.RED);                                // أو لو
 - كل حاوية بتمرير أو `setClip(true)` تكلف draw call إضافية أو اثنتين.
 - صفحة الأطلس 1024×1024 (4 م.ب)، وتُضاف صفحة تلقائياً عند الامتلاء.
 
-## قيود معروفة
+### قيود معروفة
 
 - `EditText` سطر واحد فقط. والمؤشر داخل نص يخلط عربي وإنجليزي تقريبي الموضع.
 - الحركات (التشكيل) تُوضَع فوق الحرف بتوسيط تقريبي، لأن libGDX لا يقرأ جداول GPOS للخط.
@@ -243,7 +319,7 @@ Compat.theme.primary.set(Color.RED);                                // أو لو
 - إضافة / حذف عناصر `RecyclerView` بلا حركة انتقالية.
 - GWT / HTML غير مدعوم (بسبب FreeType).
 
-## تشغيل المعرض والاختبارات
+### تشغيل المعرض والاختبارات
 
 ```bash
 ./gradlew :demo:desktop:run                    # المعرض على الحاسوب (أضف --args="--rtl" للعربية)
@@ -253,11 +329,11 @@ Compat.theme.primary.set(Color.RED);                                // أو لو
 
 اختبارات `run-test.sh`: ‏`tour` (كل المكونات)، `inputs`، `rtl --rtl`، `idle`. تحتاج `xvfb` على لينكس.
 
-## التوثيق
+### التوثيق
 
 موقع التوثيق الإنجليزي في مجلد `docs/` (يُولَّد من `docs-src/` عبر `python3 docs-src/build.py`) ومنشور على GitHub Pages.
 
-## التراخيص
+### التراخيص
 
 - IBM Plex Sans Arabic — SIL Open Font License 1.1
 - Material Icons — Apache License 2.0
