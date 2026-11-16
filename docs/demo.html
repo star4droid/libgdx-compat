@@ -77,34 +77,7 @@ cd libgdx-compat
 <p>Releases are made by the <strong>Release</strong> workflow, which only runs when started by hand:
 <strong>Actions → Release → Run workflow</strong>, then enter the version (for example <code>1.0.1</code>), optional notes, and whether it is a pre-release.</p>
 <p>The workflow builds the library jar, the sources jar and the demo APK, writes release notes (your text, the commits since the previous tag, download table, JitPack snippet), creates the tag and publishes the release with the files attached. JitPack picks the new tag up automatically.</p>
-<p>To sign the APK with your own key (so each new APK installs over the previous one), add these repository secrets under <strong>Settings → Secrets and variables → Actions</strong>:</p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>Secret</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>RELEASE_KEYSTORE_BASE64</code></td>
-<td>your <code>.jks</code> file encoded with <code>base64 -w0 release.jks</code></td>
-</tr>
-<tr>
-<td><code>RELEASE_KEYSTORE_PASSWORD</code></td>
-<td>keystore password</td>
-</tr>
-<tr>
-<td><code>RELEASE_KEY_ALIAS</code></td>
-<td>key alias</td>
-</tr>
-<tr>
-<td><code>RELEASE_KEY_PASSWORD</code></td>
-<td>key password</td>
-</tr>
-</tbody>
-</table></div>
-<p>Without them the APK is signed with a debug key.</p>
+<p>The demo APK is signed with <code>demo/android/demo-release.jks</code>, a key committed to the repository on purpose, so each new APK installs over the previous one. It only signs the gallery app; never reuse it for a real app.</p>
 <h2 id="third-party-assets">Third-party assets<a class="anchor" href="#third-party-assets" title="Permanent link">#</a></h2>
 <div class="table-wrap"><table>
 <thead>

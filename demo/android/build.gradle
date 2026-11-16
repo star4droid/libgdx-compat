@@ -12,16 +12,13 @@ android {
         versionName System.getenv('VERSION') ?: '1.0.0'
     }
     signingConfigs {
-        // Set the RELEASE_KEYSTORE_* secrets (see .github/workflows/release.yml) to sign with your own key, so a new
-        // APK installs over the previous one. Without them the release APK is signed with a debug key.
+        // Demo key committed to the repository on purpose: it only signs the gallery app, so every release APK
+        // has the same signature and installs over the previous one. Do not reuse it for a real app.
         release {
-            def ks = System.getenv('RELEASE_KEYSTORE_FILE')
-            if (ks) {
-                storeFile file(ks)
-                storePassword System.getenv('RELEASE_KEYSTORE_PASSWORD')
-                keyAlias System.getenv('RELEASE_KEY_ALIAS')
-                keyPassword System.getenv('RELEASE_KEY_PASSWORD')
-            }
+            storeFile file('demo-release.jks')
+            storePassword 'libgdxcompat'
+            keyAlias 'demo'
+            keyPassword 'libgdxcompat'
         }
     }
     sourceSets {
@@ -37,7 +34,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig System.getenv('RELEASE_KEYSTORE_FILE') ? signingConfigs.release : signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }

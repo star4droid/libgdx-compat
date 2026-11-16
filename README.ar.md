@@ -259,7 +259,7 @@ Compat.theme.primary.set(Color.RED);                                // أو لو
 
 يبني الـ jar والـ sources jar والـ APK، ويكتب ملاحظات الإصدار (نصك، والـ commits منذ الإصدار السابق، وجدول التنزيل)، ثم ينشئ الـ tag وينشر الإصدار بالملفات.
 
-لتوقيع الـ APK بمفتاحك أضف الأسرار `RELEASE_KEYSTORE_BASE64` و`RELEASE_KEYSTORE_PASSWORD` و`RELEASE_KEY_ALIAS` و`RELEASE_KEY_PASSWORD` من **Settings ← Secrets and variables ← Actions**؛ بدونها يُوقَّع بمفتاح debug.
+يُوقَّع الـ APK بالمفتاح `demo/android/demo-release.jks` الموجود في المستودع عمداً، فيُثبَّت كل إصدار جديد فوق السابق. هذا المفتاح للتطبيق التجريبي فقط؛ لا تستعمله لتطبيق حقيقي.
 
 ## التوثيق
 
