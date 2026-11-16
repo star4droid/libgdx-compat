@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/favicon.svg" width="88" alt="libgdx-compat logo">
+  <img src="docs/images/favicon.svg" width="80" alt="libgdx-compat logo">
 </p>
 
 <h1 align="center">libgdx-compat</h1>
@@ -23,21 +23,14 @@
 <p align="center">
   <a href="https://star4droid.github.io/libgdx-compat/"><b>Documentation</b></a> ·
   <a href="https://star4droid.github.io/libgdx-compat/getting-started.html"><b>Getting started</b></a> ·
-  <a href="https://github.com/star4droid/libgdx-compat/releases"><b>Download the demo APK</b></a>
+  <a href="https://github.com/star4droid/libgdx-compat/releases"><b>Demo APK</b></a> ·
+  <a href="README.ar.md"><b>Arabic</b></a>
 </p>
 
-<p align="center">
-  <img src="docs/images/01_widgets.png" width="200" alt="Widgets">
-  <img src="docs/images/05_list.png" width="200" alt="RecyclerView list">
-  <img src="docs/images/14_sheet_expanded.png" width="200" alt="Bottom sheet">
-  <img src="docs/images/16_dialog.png" width="200" alt="Dialog">
-</p>
-<p align="center">
-  <img src="docs/images/10_grid.png" width="200" alt="Grid">
-  <img src="docs/images/17_drawer.png" width="200" alt="Navigation drawer">
-  <img src="docs/images/18_dark.png" width="200" alt="Dark theme">
-  <img src="docs/images/rtl_04_drawer.png" width="200" alt="Right-to-left mode">
-</p>
+<table>
+<tr><td><img src="docs/images/readme/01_widgets.png" width="170" alt="Widgets"></td><td><img src="docs/images/readme/04_inputs_typing.png" width="170" alt="Text fields"></td><td><img src="docs/images/readme/05_list.png" width="170" alt="RecyclerView"></td><td><img src="docs/images/readme/14_sheet_expanded.png" width="170" alt="Bottom sheet"></td><td><img src="docs/images/readme/16_dialog.png" width="170" alt="Dialog"></td><td><img src="docs/images/readme/17_drawer.png" width="170" alt="Drawer"></td><td><img src="docs/images/readme/18_dark.png" width="170" alt="Dark theme"></td><td><img src="docs/images/readme/rtl_04_drawer.png" width="170" alt="Right-to-left"></td></tr>
+<tr><td align="center"><sub>Widgets</sub></td><td align="center"><sub>Text fields</sub></td><td align="center"><sub>RecyclerView</sub></td><td align="center"><sub>Bottom sheet</sub></td><td align="center"><sub>Dialog</sub></td><td align="center"><sub>Drawer</sub></td><td align="center"><sub>Dark theme</sub></td><td align="center"><sub>Right-to-left</sub></td></tr>
+</table>
 
 ## Why this library
 
@@ -45,297 +38,216 @@ libgdx-compat was built for the UI of **[Star2D](https://github.com/star4droid/S
 
 ## Features
 
-- Built on Scene2D: every component is a normal `Actor` that drops into any `Stage`.
-- One module, plain Java 8: Android, desktop and Linux. Tested with libGDX 1.12.1 and 1.14.2.
-- No skin, no images, no custom shader: shapes, shadows and ripples are drawn from code.
-- Fast: a typical screen renders in 1–4 draw calls, and lists only create the visible rows.
-- Arabic and RTL: letter shaping, bidirectional text and fully mirrored layouts.
-- XML layouts with Android's tag and attribute names.
+- **Built on Scene2D.** Every component is a normal `Actor` that drops into any `Stage`.
+- **One module, plain Java 8.** Android, desktop and Linux. Tested with libGDX 1.12.1 and 1.14.2.
+- **No skin, no images, no custom shader.** Shapes, shadows and ripples are drawn from code.
+- **Fast.** A typical screen renders in 1–4 draw calls; lists only create the rows that are visible.
+- **Arabic and RTL.** Letter shaping, bidirectional text and fully mirrored layouts.
+- **XML layouts** with Android's tag and attribute names.
+
+## Installation
 
 ```groovy
+// root build.gradle (or settings.gradle)
 repositories { maven { url 'https://jitpack.io' } }
-dependencies { api 'com.github.star4droid:libgdx-compat:1.0.0' }
-```
 
-```java
-Compat.init();
-Stage stage = Compat.createStage();
-
-LinearLayout root = LinearLayout.vertical().padding(Compat.dp(16)).spacing(Compat.dp(12));
-root.setFillParent(true);
-root.add(new TextView("Hello", Typography.HEADLINE_SMALL));
-root.add(new Button("Show sheet").onClick(() -> BottomSheet.show(stage, sheetContent)));
-stage.addActor(root);
-```
-
-Full guide with every component: **https://star4droid.github.io/libgdx-compat/**
-
-## Acknowledgements
-
-Thanks to **Claude Fable 5.2** by [Anthropic](https://www.anthropic.com) for helping me design, build and test this library.
-
----
-
-## بالعربية
-
-مكتبة واجهات لـ libGDX على نمط AppCompat / Material 3: أزرار، FAB، حقول نص، RecyclerView (قائمة وشبكة)، ViewPager، TabLayout، BottomSheet، Dialog، Snackbar، Drawer، Toolbar، BottomNavigation، Navigator، وتصميم الواجهات عبر XML بنفس أسماء أندرويد.
-
-صُنعت المكتبة لتُستعمل في واجهات محرك الألعاب [Star2D](https://github.com/star4droid/Star2D).
-
-- تعمل فوق Scene2D العادي (`Stage` / `Actor`)، فتدخل في أي مشروع libGDX موجود.
-- Java 8 خالصة في موديول واحد: أندرويد، سطح المكتب، لينكس.
-- مُجرَّبة مع libGDX ‏1.12.1 و‏1.14.2.
-- العربية مدعومة: تشكيل الحروف، الاتجاه RTL، الحركات، وقلب الواجهة كاملة.
-- بدون صور ولا Skin ولا شيدر خاص: كل الأشكال تُرسم من الكود.
-
-### التثبيت
-
-**الأسهل:** انسخ `dist/libgdx-compat-1.0.0.jar` إلى مجلد `libs` في موديول core:
-
-```groovy
+// core/build.gradle
 dependencies {
-    api files('libs/libgdx-compat-1.0.0.jar')
+    api 'com.github.star4droid:libgdx-compat:1.0.0'
     api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 }
 ```
 
-وأضف natives الخاصة بـ FreeType في كل منصة كما في أي مشروع libGDX (`gdx-freetype-platform`). انظر `demo/desktop/build.gradle` و`demo/android/build.gradle` كمثال جاهز.
+Each platform also needs the FreeType natives (`gdx-freetype-platform`), as in any libGDX project that uses fonts. The jar is also available on the [releases page](https://github.com/star4droid/libgdx-compat/releases). Details: [Getting started](https://star4droid.github.io/libgdx-compat/getting-started.html).
 
-**أو كموديول:** انسخ مجلد `compat` إلى مشروعك وأضف `include 'compat'` ثم `api project(':compat')`.
-
-**أو JitPack:** بعد عمل Release على GitHub بـ tag باسم `1.0.0`:
-
-```groovy
-repositories { maven { url 'https://jitpack.io' } }
-dependencies { api 'com.github.star4droid:libgdx-compat:1.0.0' }
-```
-
-إذا فعّلت `minifyEnabled` فقواعد R8 اللازمة موجودة داخل الـ jar وتُطبَّق تلقائياً.
-
-### البدء السريع
+## Quick start
 
 ```java
 public class MyGame extends ApplicationAdapter {
     Stage stage;
 
-    public void create () {
-        Compat.init();                       // مرة واحدة
-        stage = Compat.createStage();        // ScreenViewport + زر الرجوع
+    @Override public void create () {
+        Compat.init();                       // once
+        stage = Compat.createStage();        // ScreenViewport + back-key handling
         Gdx.input.setInputProcessor(stage);
 
         LinearLayout root = LinearLayout.vertical().padding(Compat.dp(16)).spacing(Compat.dp(12));
         root.setFillParent(true);
         root.setBackground(Compat.theme.surface);
 
-        root.add(new TextView("مرحباً", Typography.HEADLINE_SMALL));
-        root.add(new EditText("الاسم").setLeadingIcon(Icons.PERSON)).matchWidth();
-        root.add(new Button("حفظ").icon(Icons.SAVE).onClick(() ->
-            Snackbar.make(stage, "تم الحفظ", Snackbar.LENGTH_SHORT).show()));
+        root.add(new TextView("Hello", Typography.HEADLINE_SMALL));
+        root.add(new EditText("Name").setLeadingIcon(Icons.PERSON)).matchWidth();
+        root.add(new Button("Save").icon(Icons.SAVE).onClick(() ->
+                Snackbar.make(stage, "Saved", Snackbar.LENGTH_SHORT).show()));
 
         stage.addActor(root);
     }
 
-    public void resize (int w, int h) { stage.getViewport().update(w, h, true); }
+    @Override public void resize (int w, int h) { stage.getViewport().update(w, h, true); }
 
-    public void render () {
+    @Override public void render () {
         ScreenUtils.clear(Compat.theme.background);
         stage.act();
         stage.draw();
     }
 
-    public void dispose () { stage.dispose(); Compat.dispose(); }
+    @Override public void dispose () { stage.dispose(); Compat.dispose(); }
 }
 ```
 
-المقاسات بالبكسل الحقيقي؛ استعمل `Compat.dp(16)` و`Compat.sp(14)` دائماً. إن كنت تستعمل Viewport بمقاس افتراضي ثابت فضع `config.density = عرض_الـstage / 360f`.
+Sizes are real pixels: use `Compat.dp(16)` and `Compat.sp(14)`.
 
-### التخطيط
+## Components
 
-| الصنف | الوصف |
+| Area | Components |
 |---|---|
-| `LinearLayout` | صف أو عمود، مع `weight` و`gravity` و`spacing` |
-| `FrameLayout` | عناصر فوق بعض، كل عنصر يُثبَّت بـ `gravity` |
-| `FlowLayout` | صف يلتف لسطر جديد (مجموعات Chip) |
-| `ScrollView` | تمرير عمودي أو أفقي لعنصر واحد |
-| `CardView` | بطاقة: `ELEVATED` / `FILLED` / `OUTLINED` |
+| [Layouts](https://star4droid.github.io/libgdx-compat/layouts.html) | `LinearLayout`, `FrameLayout`, `FlowLayout`, `ScrollView`, `CardView` |
+| [Widgets](https://star4droid.github.io/libgdx-compat/widgets.html) | `TextView`, `Button`, `IconButton`, `Fab`, `EditText`, `CheckBox`, `RadioButton`, `Switch`, `Slider`, `Chip`, `ProgressBar`, `ImageView`, `IconView` |
+| [Lists & pages](https://star4droid.github.io/libgdx-compat/lists.html) | `RecyclerView` (list and grid), pull-to-refresh, `ViewPager`, `TabLayout` |
+| [Overlays](https://star4droid.github.io/libgdx-compat/overlays.html) | `BottomSheet`, `AlertDialog`, `PopupMenu`, `Snackbar` |
+| [Navigation](https://star4droid.github.io/libgdx-compat/navigation.html) | `Toolbar`, `BottomNavigationView`, `DrawerLayout`, `NavigationView`, `Navigator` |
+| [XML layouts](https://star4droid.github.io/libgdx-compat/xml.html) | `LayoutInflater` with Android tag names, `onClick`, `@string`, `@color`, `<include>` |
+| [Theming](https://star4droid.github.io/libgdx-compat/theming.html) | Material 3 colour roles, seed colours, dark mode, type scale, Arabic / RTL |
 
-`add()` تُرجع `LayoutParams` للتسلسل:
+### Lists, grids and pages
 
-```java
-row.add(title).weight(1).width(0).margins(dp(16), 0, dp(8), 0);
-frame.add(fab).gravity(Gravity.BOTTOM | Gravity.END).margin(dp(16));
-box.add(child).matchWidth().height(dp(56));
-```
-
-كل `ViewGroup` له: `setPadding`، `setBackground`، `setCornerRadius`، `setStroke`، `setElevation`، `setOnClick` (مع Ripple).
-
-### العناصر
-
-`TextView`، `Button` (‏FILLED / TONAL / OUTLINED / TEXT / ELEVATED)، `IconButton`، `Fab` (صغير / عادي / كبير / ممتد مع `extend()` و`shrink()` و`show()` و`hide()`)، `EditText` (‏OUTLINED / FILLED، عنوان عائم، أيقونات، خطأ، كلمة مرور، تحديد ونسخ ولصق)، `CheckBox`، `RadioButton` + `RadioGroup`، `Switch`، `Slider`، `Chip`، `ProgressBar` (خطي ودائري)، `ImageView` (مع زوايا دائرية و`CENTER_CROP`)، `IconView`، `Divider`، `Space`.
-
-الأيقونات: خط Material Icons مضمَّن (~2200 أيقونة). الشائع منها ثوابت في `Icons` والباقي بالاسم: `Icons.get("shopping_cart")`.
-
-### القوائم والشبكات
+Only the visible rows exist; they are recycled while scrolling, so 100 000 items cost the same as 10.
 
 ```java
 RecyclerView list = new RecyclerView();
-list.setOnItemClick(position -> open(position));          // قبل setAdapter
-list.setAdapter(new RecyclerView.ListAdapter<>(items,
-    () -> new ContactRow(),                                // يُنشأ عدد قليل فقط
-    (row, item, position) -> row.bind(item)));             // يُعاد ربطه عند التمرير
+list.setOnItemClick(position -> open(position));
+list.setAdapter(new RecyclerView.ListAdapter<>(contacts,
+        () -> new ContactRow(),                          // creates a row
+        (row, contact, position) -> row.bind(contact))); // fills it while scrolling
 
-list.setSpanCount(3);            // شبكة
-list.setSpacing(dp(8));
-list.setDividers(true, dp(72));
-list.setOnRefresh(() -> load()); // سحب للتحديث، ثم setRefreshing(false)
-list.setOnEndReached(() -> loadMore());
-```
+list.setSpanCount(3);                                    // grid
+list.setOnRefresh(() -> reload());                       // pull to refresh
 
-للتحكم الكامل (أنواع صفوف متعددة، ارتفاعات مختلفة) ورِّث `RecyclerView.Adapter` كما في أندرويد: `getItemCount`، `getItemViewType`، `onCreateViewHolder`، `onBindViewHolder`، واختيارياً `getItemSize`.
-
-### الصفحات والتبويبات
-
-```java
-ViewPager pager = new ViewPager();
-pager.addPage(homePage);
-pager.addPage(index -> buildHeavyPage());   // تُبنى عند أول اقتراب منها
 TabLayout tabs = new TabLayout(TabLayout.MODE_SCROLLABLE);
-tabs.addTab("الرئيسية");
+tabs.addTab("Home");
 tabs.addTab("Settings", Icons.SETTINGS);
 tabs.setupWithViewPager(pager);
 ```
 
-### الطبقات العلوية
+<table>
+<tr><td><img src="docs/images/readme/05_list.png" width="170" alt="List with dividers"></td><td><img src="docs/images/readme/08_pull_refresh.png" width="170" alt="Pull to refresh"></td><td><img src="docs/images/readme/10_grid.png" width="170" alt="Grid + scrollable tabs"></td><td><img src="docs/images/readme/rtl_03_list.png" width="170" alt="List in RTL mode"></td></tr>
+<tr><td align="center"><sub>List with dividers</sub></td><td align="center"><sub>Pull to refresh</sub></td><td align="center"><sub>Grid + scrollable tabs</sub></td><td align="center"><sub>List in RTL mode</sub></td></tr>
+</table>
+
+### Bottom sheets, dialogs and menus
 
 ```java
-BottomSheet sheet = new BottomSheet(content);     // يُسحب بالإصبع: مخفي / نصف / كامل
-sheet.setPeekHeight(dp(300)).setFullHeight(true);
-sheet.show(stage);
+new BottomSheet(content).setFullHeight(true).show(stage);   // drag between hidden / half / full
 
-new AlertDialog().setTitle("حذف؟").setMessage("لا يمكن التراجع")
-    .setPositiveButton("حذف", () -> delete()).setNegativeButton("إلغاء", null).show(stage);
+new AlertDialog().setTitle("Delete item?").setMessage("This cannot be undone.")
+        .setNegativeButton("Cancel", null)
+        .setPositiveButton("Delete", () -> delete())
+        .show(stage);
 
-new PopupMenu().add("تعديل", Icons.EDIT, () -> edit()).add("حذف", Icons.DELETE, () -> delete()).show(anchorView);
+new PopupMenu().add("Edit", Icons.EDIT, () -> edit()).add("Delete", Icons.DELETE, () -> delete()).show(anchor);
 
-Snackbar.make(stage, "تم", Snackbar.LENGTH_LONG).setAction("تراجع", () -> undo()).show();
+Snackbar.make(stage, "Archived", Snackbar.LENGTH_LONG).setAction("Undo", () -> undo()).show();
+```
 
+A list inside a bottom sheet scrolls normally and hands the drag over to the sheet when it reaches its top.
+
+<table>
+<tr><td><img src="docs/images/readme/13_sheet_collapsed.png" width="170" alt="Bottom sheet (collapsed)"></td><td><img src="docs/images/readme/14_sheet_expanded.png" width="170" alt="Bottom sheet (expanded)"></td><td><img src="docs/images/readme/16_dialog.png" width="170" alt="AlertDialog"></td><td><img src="docs/images/readme/15_popup_menu.png" width="170" alt="PopupMenu"></td><td><img src="docs/images/readme/07_item_click_snackbar.png" width="170" alt="Snackbar"></td></tr>
+<tr><td align="center"><sub>Bottom sheet (collapsed)</sub></td><td align="center"><sub>Bottom sheet (expanded)</sub></td><td align="center"><sub>AlertDialog</sub></td><td align="center"><sub>PopupMenu</sub></td><td align="center"><sub>Snackbar</sub></td></tr>
+</table>
+
+### Navigation
+
+```java
 DrawerLayout drawer = new DrawerLayout();
-drawer.setContent(screen);
-drawer.setDrawer(new NavigationView().addItem(Icons.HOME, "الرئيسية", () -> go()));
+drawer.setContent(mainScreen);
+drawer.setDrawer(new NavigationView()
+        .addItem(Icons.HOME, "Home", () -> showHome())
+        .addItem(Icons.SETTINGS, "Settings", () -> showSettings()));
+
+Navigator navigator = new Navigator();            // back stack with slide transitions
+navigator.push(new HomeScreen());                 // the back key pops it
 ```
 
-`BottomSheet.setModal(false)` يعطيك لوحة سفلية دائمة لا تحجب الشاشة. القائمة داخل الـ sheet تتمرر طبيعياً وتسلّم السحب للـ sheet عند وصولها لأعلاها.
+`Toolbar` and `BottomNavigationView` (with badges) complete the set. Android BACK / desktop ESC closes the top-most dialog, sheet or drawer, then pops a screen.
 
-`Toolbar` و`BottomNavigationView` (مع شارات `setBadge`) و`Navigator` لمكدّس الشاشات:
+<table>
+<tr><td><img src="docs/images/readme/17_drawer.png" width="170" alt="Navigation drawer"></td><td><img src="docs/images/readme/21_detail.png" width="170" alt="Navigator screen"></td><td><img src="docs/images/readme/01_widgets.png" width="170" alt="Toolbar, tabs, bottom bar"></td></tr>
+<tr><td align="center"><sub>Navigation drawer</sub></td><td align="center"><sub>Navigator screen</sub></td><td align="center"><sub>Toolbar, tabs, bottom bar</sub></td></tr>
+</table>
 
-```java
-Navigator nav = new Navigator();
-nav.setFillParent(true);
-stage.addActor(nav);
-nav.push(new HomeScreen());     // class HomeScreen extends Navigator.Screen { Actor onCreateView() {...} }
-```
+### XML layouts
 
-زر الرجوع (BACK في أندرويد، ESC في الحاسوب) يغلق أعلى طبقة مفتوحة ثم يرجع شاشة ثم يخرج من التطبيق.
-
-### الواجهات عبر XML
-
-نفس وسوم وخصائص أندرويد، والبادئات `android:` و`app:` اختيارية:
+The same tags and attributes as Android; the `android:` and `app:` prefixes are optional.
 
 ```xml
 <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical" android:padding="16dp">
     <TextView android:text="@string/title" android:textAppearance="headlineSmall" />
-    <EditText android:id="@+id/name" android:layout_width="match_parent" android:hint="الاسم" app:startIcon="person" />
-    <Button android:text="إرسال" android:onClick="onSend" app:icon="send" android:layout_gravity="end" />
+    <EditText android:id="@+id/name" android:layout_width="match_parent" android:hint="Name" app:startIcon="person" />
+    <Button android:text="Send" android:onClick="onSend" app:icon="send" android:layout_gravity="end" />
 </LinearLayout>
 ```
 
 ```java
-Actor root = new LayoutInflater().putString("title", "تسجيل")
-    .inflate(Gdx.files.internal("layouts/login.xml"), this);   // this = صاحب دوال onClick
+Actor root = new LayoutInflater().putString("title", "Sign in")
+        .inflate(Gdx.files.internal("layouts/login.xml"), this);   // this = owner of onSend()
 EditText name = Views.find(root, "name");
-
-public void onSend () { ... }          // أو onSend(Actor view)
 ```
 
-**الوسوم:** LinearLayout، FrameLayout، FlowLayout / ChipGroup، ScrollView، HorizontalScrollView، CardView، TextView، Button، ImageButton، FloatingActionButton، EditText / TextInputLayout، CheckBox، RadioButton، RadioGroup، Switch، Slider / SeekBar، Chip، ProgressBar، ImageView، Icon، Divider، Space، RecyclerView، ViewPager، TabLayout (أبناؤه `<TabItem text icon/>`)، Toolbar (أبناؤه `<item icon onClick/>`)، BottomNavigationView و NavigationView (أبناؤهما `<item icon title/>`)، DrawerLayout، `<include layout="other.xml"/>`. الأسماء الكاملة مثل `com.google.android.material.card.MaterialCardView` مقبولة أيضاً.
+<table>
+<tr><td><img src="docs/images/readme/11_xml.png" width="170" alt="Screen inflated from XML"></td></tr>
+<tr><td align="center"><sub>Screen inflated from XML</sub></td></tr>
+</table>
 
-**الخصائص العامة:** `id`، `layout_width` / `layout_height` (‏`match_parent`، `wrap_content`، `16dp`)، `layout_weight`، `layout_gravity`، `layout_margin*`، `padding*`، `background`، `visibility`، `enabled`، `alpha`، `onClick`، ومن عندنا: `cornerRadius`، `elevation`، `strokeColor`، `strokeWidth`، `spacing`.
-
-**القيم:** مقاسات `dp` / `sp` / `px` / `@dimen/x`، ألوان `#RRGGBB` / `#AARRGGBB` / `@color/primary` / `?attr/colorOnSurface`، نصوص `@string/x`، أيقونات بالاسم (`add` أو `@drawable/ic_add`).
-
-**وسم خاص بك:** `LayoutInflater.register("MyView", (attrs, inflater) -> new MyView(attrs.string("title")));`
-
-### الثيم
-
-`Compat.theme` كائن واحد بألوان Material 3. تغييره يُعيد تلوين كل الواجهة فوراً دون إعادة بنائها:
+### Theming and RTL
 
 ```java
 Compat.theme.set(Theme.dark());
-Compat.theme.set(Theme.fromSeed(Color.valueOf("00897B"), false));   // مخطط كامل من لون واحد
-Compat.theme.primary.set(Color.RED);                                // أو لون بعينه
+Compat.theme.set(Theme.fromSeed(Color.valueOf("00897B"), false));  // full scheme from one colour
+
+Compat.Config config = new Compat.Config();
+config.rtl = true;                                                 // mirror the whole UI
+Compat.init(config);
 ```
 
-أحجام النصوص في `Typography.SIZE`، ونصف أقطار الزوايا في `theme.cornerMedium` وأخواتها. الخطوط تُستبدل عبر `Compat.Config` (‏`regularFont`، `mediumFont`).
+Changing the theme restyles every widget immediately, with no rebuild. Arabic text is shaped and reordered automatically in every component.
 
-### العربية و RTL
+<table>
+<tr><td><img src="docs/images/readme/18_dark.png" width="170" alt="Dark theme"></td><td><img src="docs/images/readme/19_seed_theme.png" width="170" alt="Seed colour theme"></td><td><img src="docs/images/readme/rtl_04_drawer.png" width="170" alt="RTL drawer"></td><td><img src="docs/images/readme/rtl_03_list.png" width="170" alt="RTL list"></td></tr>
+<tr><td align="center"><sub>Dark theme</sub></td><td align="center"><sub>Seed colour theme</sub></td><td align="center"><sub>RTL drawer</sub></td><td align="center"><sub>RTL list</sub></td></tr>
+</table>
 
-- النص العربي يُشكَّل ويُرتَّب تلقائياً في كل عنصر، مع خلط الإنجليزية والأرقام.
-- `config.rtl = true` (أو `Compat.setRtl(true)` قبل بناء الواجهة) يقلب كل شيء: ترتيب الصفوف، الهوامش، الدرج، التبويبات، اتجاه السحب.
-- أي خط بديل للعربية يجب أن يحتوي جدول Presentation Forms (‏U+FE70–U+FEFF)، مثل الخط المضمَّن IBM Plex Sans Arabic.
+## Performance
 
-### الأداء
-
-ما فعلته المكتبة:
-
-- **أطلس واحد** للأشكال والنصوص والأيقونات، فالشاشة كلها تُرسم في 1–4 draw calls.
-- العناصر البسيطة ترسم نفسها مباشرة دون Actors داخلية، والحاويات بلا مصفوفة تحويل.
-- `RecyclerView` ينشئ الصفوف الظاهرة فقط ويعيد استعمالها؛ تغيّر صف لا يعيد تخطيط الشاشة.
-- النص يُقاس ويُشكَّل مرة واحدة ثم يُرسم من cache.
-- الحروف تُولَّد عند الحاجة فقط (لا قائمة حروف مسبقة).
-- المكتبة تطلب الإطارات وقت الحركة فقط، فيمكنك `Gdx.graphics.setContinuousRendering(false)` لتوفير البطارية.
-
-قياسات تطبيق المعرض (سطح المكتب، 412×892 و1080×2340):
-
-| الحالة | draw calls | تخصيص ذاكرة لكل إطار |
+| Scenario (gallery app, desktop) | Draw calls | Allocation per frame |
 |---|---|---|
-| شاشة ثابتة | 3 | ~60 بايت |
-| قذف قائمة 100,000 صف | 3 | ~0.6 ك.ب (نصوص الصفوف الجديدة) |
-| قذف شبكة 3 أعمدة بصور | 4–5 | ~0.5–1 ك.ب |
-| 3 ثوانٍ خمول مع إيقاف الرسم المستمر | 0 إطار | — |
+| Static screen | 3 | about 60 bytes |
+| Fling through a 100 000-row list | 3 | about 0.6 KB |
+| Fling through a 3-column image grid | 4–5 | about 0.5–1 KB |
+| 3 s idle with continuous rendering off | 0 frames | – |
 
-نصائح:
+Shapes, text and icons share one atlas page, widgets draw themselves without inner actors, and components only request frames while they animate. More in [Performance](https://star4droid.github.io/libgdx-compat/performance.html).
 
-- صور صغيرة متكررة (أفاتار، أيقونات خاصة): `Compat.gfx().pack(pixmap)` يضعها في الأطلس نفسه فلا تزيد draw calls.
-- كل حاوية بتمرير أو `setClip(true)` تكلف draw call إضافية أو اثنتين.
-- صفحة الأطلس 1024×1024 (4 م.ب)، وتُضاف صفحة تلقائياً عند الامتلاء.
+## Demo app
 
-### قيود معروفة
-
-- `EditText` سطر واحد فقط. والمؤشر داخل نص يخلط عربي وإنجليزي تقريبي الموضع.
-- الحركات (التشكيل) تُوضَع فوق الحرف بتوسيط تقريبي، لأن libGDX لا يقرأ جداول GPOS للخط.
-- لا يوجد دعم للغات تحتاج تشكيلاً معقداً غير العربية، ولا للإيموجي الملوّنة.
-- عند ظهور لوحة المفاتيح في أندرويد استعمل `android:windowSoftInputMode="adjustResize"` (كما في المعرض) أو أبلغ المكتبة بارتفاعها عبر `Compat.setKeyboardHeight(px)`.
-- إضافة / حذف عناصر `RecyclerView` بلا حركة انتقالية.
-- GWT / HTML غير مدعوم (بسبب FreeType).
-
-### تشغيل المعرض والاختبارات
+Download `libgdx-compat-demo.apk` from the [releases page](https://github.com/star4droid/libgdx-compat/releases), or run it from source:
 
 ```bash
-./gradlew :demo:desktop:run                    # المعرض على الحاسوب (أضف --args="--rtl" للعربية)
-./gradlew :demo:android:assembleDebug          # APK (يحتاج Android SDK في local.properties)
-./gradlew :demo:desktop:writeCp && ./run-test.sh tour   # اختبار آلي: لمسات مبرمجة + لقطات في shots/
+./gradlew :demo:desktop:run                  # desktop gallery (--args="--rtl" for right-to-left)
+./gradlew :demo:android:assembleDebug        # Android APK (needs sdk.dir in local.properties)
 ```
 
-اختبارات `run-test.sh`: ‏`tour` (كل المكونات)، `inputs`، `rtl --rtl`، `idle`. تحتاج `xvfb` على لينكس.
+Scripted UI tests that tap, drag and type through the gallery are described in [Demo & testing](https://star4droid.github.io/libgdx-compat/demo.html).
 
-### التوثيق
+## Documentation
 
-موقع التوثيق الإنجليزي في مجلد `docs/` (يُولَّد من `docs-src/` عبر `python3 docs-src/build.py`) ومنشور على GitHub Pages.
+The full guide, with every component and option, is at **https://star4droid.github.io/libgdx-compat/**. Its source is in `docs-src/` (Markdown); `python3 docs-src/build.py` regenerates the site in `docs/`.
 
-### التراخيص
+## Acknowledgements
 
-- IBM Plex Sans Arabic — SIL Open Font License 1.1
-- Material Icons — Apache License 2.0
+Thanks to **Claude Fable 5.2** by [Anthropic](https://www.anthropic.com) for helping me design, build and test this library.
 
-التفاصيل في `THIRD_PARTY.md`.
+## Third-party assets
+
+IBM Plex Sans Arabic (SIL Open Font License 1.1) and Material Icons (Apache License 2.0). See [THIRD_PARTY.md](THIRD_PARTY.md).
