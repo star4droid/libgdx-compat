@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overview · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. Overview.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="active" href="index.html">Overview</a>
+    <a class="" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="" href="widgets.html">Widgets</a>
+    <a class="" href="lists.html">Lists &amp; pages</a>
+    <a class="" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="" href="xml.html">XML layouts</a>
+    <a class="" href="theming.html">Theming &amp; RTL</a>
+    <a class="" href="performance.html">Performance</a>
+    <a class="" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content home">
+<div class="hero">
+<div class="hero-text">
+<h1>libgdx-compat</h1>
+<p class="lead">AppCompat-style Material 3 UI components for libGDX. Bottom sheets, FABs, lists, grids, view pagers, dialogs and drawers that behave like their Android counterparts, plus Android-style XML layouts.</p>
+<p class="hero-actions"><a class="btn primary" href="getting-started.html">Get started</a> <a class="btn" href="https://github.com/star4droid/libgdx-compat">View on GitHub</a></p>
+</div>
+<div class="hero-shots">
+<img src="images/01_widgets.png" alt="Widgets page of the gallery app">
+<img src="images/14_sheet_expanded.png" alt="Bottom sheet over a list">
+</div>
+</div>
+
+<h2 id="why">Why<a class="anchor" href="#why" title="Permanent link">#</a></h2>
+<p>Scene2D gives you the building blocks, but making a bottom sheet that follows the finger, a recycled list of 100 000 rows, or a ViewPager with a tab indicator takes a lot of code. libgdx-compat packages those components with the touch behaviour, animations and sizing rules people expect from Android apps.</p>
+<ul>
+<li><strong>Built on Scene2D.</strong> Every component is a normal <code>Actor</code>, so it drops into any existing <code>Stage</code>.</li>
+<li><strong>One module, plain Java 8.</strong> Android, desktop (LWJGL3) and Linux. Tested with libGDX 1.12.1 and 1.14.2.</li>
+<li><strong>No skin, no images, no custom shader.</strong> Shapes, shadows and ripples are drawn from code.</li>
+<li><strong>Fast.</strong> A typical screen renders in 1–4 draw calls; lists only create the rows that are visible.</li>
+<li><strong>Arabic and RTL.</strong> Letter shaping, bidirectional text and fully mirrored layouts.</li>
+<li><strong>XML layouts</strong> with the same tag and attribute names as Android.</li>
+</ul>
+<h2 id="whats-inside">What's inside<a class="anchor" href="#whats-inside" title="Permanent link">#</a></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Components</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="layouts.html">Layouts</a></td>
+<td><code>LinearLayout</code>, <code>FrameLayout</code>, <code>FlowLayout</code>, <code>ScrollView</code>, <code>CardView</code></td>
+</tr>
+<tr>
+<td><a href="widgets.html">Widgets</a></td>
+<td><code>TextView</code>, <code>Button</code>, <code>IconButton</code>, <code>Fab</code>, <code>EditText</code>, <code>CheckBox</code>, <code>RadioButton</code>, <code>Switch</code>, <code>Slider</code>, <code>Chip</code>, <code>ProgressBar</code>, <code>ImageView</code>, <code>IconView</code></td>
+</tr>
+<tr>
+<td><a href="lists.html">Lists &amp; pages</a></td>
+<td><code>RecyclerView</code> (list and grid), pull-to-refresh, <code>ViewPager</code>, <code>TabLayout</code></td>
+</tr>
+<tr>
+<td><a href="overlays.html">Overlays</a></td>
+<td><code>BottomSheet</code>, <code>AlertDialog</code>, <code>PopupMenu</code>, <code>Snackbar</code></td>
+</tr>
+<tr>
+<td><a href="navigation.html">Navigation</a></td>
+<td><code>Toolbar</code>, <code>BottomNavigationView</code>, <code>DrawerLayout</code>, <code>NavigationView</code>, <code>Navigator</code></td>
+</tr>
+<tr>
+<td><a href="xml.html">XML layouts</a></td>
+<td><code>LayoutInflater</code> with Android tag names, <code>onClick</code>, <code>@string</code>, <code>@color</code>, <code>&lt;include&gt;</code></td>
+</tr>
+<tr>
+<td><a href="theming.html">Theming</a></td>
+<td>Material 3 colour roles, seed colours, dark mode, type scale, Arabic / RTL</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="a-first-look">A first look<a class="anchor" href="#a-first-look" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">LinearLayout root = LinearLayout.vertical().padding(Compat.dp(16)).spacing(Compat.dp(12));
+root.setFillParent(true);
+root.setBackground(Compat.theme.surface);
+
+root.add(new TextView(&quot;Hello&quot;, Typography.HEADLINE_SMALL));
+root.add(new EditText(&quot;Name&quot;).setLeadingIcon(Icons.PERSON)).matchWidth();
+root.add(new Button(&quot;Save&quot;).icon(Icons.SAVE).onClick(() -&gt;
+        Snackbar.make(stage, &quot;Saved&quot;, Snackbar.LENGTH_SHORT).show()));
+
+stage.addActor(root);
+</code></pre>
+<p>The same screen as XML:</p>
+<pre class="code" data-lang="xml"><code class="language-xml">&lt;LinearLayout android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot; android:padding=&quot;16dp&quot; android:background=&quot;@color/surface&quot;&gt;
+    &lt;TextView android:text=&quot;Hello&quot; android:textAppearance=&quot;headlineSmall&quot; /&gt;
+    &lt;EditText android:layout_width=&quot;match_parent&quot; android:hint=&quot;Name&quot; app:startIcon=&quot;person&quot; /&gt;
+    &lt;Button android:text=&quot;Save&quot; app:icon=&quot;save&quot; android:onClick=&quot;onSave&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+<h2 id="gallery">Gallery<a class="anchor" href="#gallery" title="Permanent link">#</a></h2>
+<div class="gallery">
+<figure><img src="images/04_inputs_typing.png" alt=""><figcaption>Text fields and selection controls</figcaption></figure>
+<figure><img src="images/05_list.png" alt=""><figcaption>RecyclerView with 100 000 rows</figcaption></figure>
+<figure><img src="images/10_grid.png" alt=""><figcaption>Grid with images from the shared atlas</figcaption></figure>
+<figure><img src="images/16_dialog.png" alt=""><figcaption>AlertDialog</figcaption></figure>
+<figure><img src="images/17_drawer.png" alt=""><figcaption>Navigation drawer</figcaption></figure>
+<figure><img src="images/18_dark.png" alt=""><figcaption>Dark theme</figcaption></figure>
+<figure><img src="images/11_xml.png" alt=""><figcaption>Screen inflated from XML</figcaption></figure>
+<figure><img src="images/rtl_04_drawer.png" alt=""><figcaption>Right-to-left mode</figcaption></figure>
+</div>
+
+<p>Try it yourself with the gallery app: see <a href="demo.html">Demo &amp; testing</a>.</p>
+    <div class="pager"><a class="next" href="getting-started.html"><span>Next</span>Getting started</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/01-index.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#why">Why</a><a href="#whats-inside">What's inside</a><a href="#a-first-look">A first look</a><a href="#gallery">Gallery</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XML layouts · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. XML layouts.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="" href="index.html">Overview</a>
+    <a class="" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="" href="widgets.html">Widgets</a>
+    <a class="" href="lists.html">Lists &amp; pages</a>
+    <a class="" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="active" href="xml.html">XML layouts</a>
+    <a class="" href="theming.html">Theming &amp; RTL</a>
+    <a class="" href="performance.html">Performance</a>
+    <a class="" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content">
+<h1 id="xml-layouts">XML layouts<a class="anchor" href="#xml-layouts" title="Permanent link">#</a></h1>
+<p><code>LayoutInflater</code> builds a view tree from an Android-style XML file. Tag and attribute names are the ones you already know from Android; the <code>android:</code> and <code>app:</code> prefixes are optional.</p>
+<p><img class="shot right" src="images/11_xml.png" alt="A screen inflated from XML"></p>
+<pre class="code" data-lang="xml"><code class="language-xml">&lt;!-- assets/layouts/login.xml --&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot;
+    android:padding=&quot;16dp&quot;&gt;
+
+    &lt;TextView
+        android:text=&quot;@string/title&quot;
+        android:textAppearance=&quot;headlineSmall&quot; /&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/name&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_marginTop=&quot;16dp&quot;
+        android:hint=&quot;Name&quot;
+        app:startIcon=&quot;person&quot; /&gt;
+
+    &lt;Button
+        android:layout_gravity=&quot;end&quot;
+        android:layout_marginTop=&quot;16dp&quot;
+        android:onClick=&quot;onSend&quot;
+        android:text=&quot;Send&quot;
+        app:icon=&quot;send&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+<div class="clear"></div>
+
+<pre class="code" data-lang="java"><code class="language-java">public class LoginScreen {
+    Actor root;
+
+    Actor build () {
+        root = new LayoutInflater()
+                .putString(&quot;title&quot;, &quot;Sign in&quot;)
+                .inflate(Gdx.files.internal(&quot;layouts/login.xml&quot;), this);   // this = onClick handler
+        return root;
+    }
+
+    public void onSend () {                // or onSend(Actor view)
+        EditText name = Views.find(root, &quot;name&quot;);
+        if (name.getText().isEmpty()) name.setError(&quot;Required&quot;);
+    }
+}
+</code></pre>
+<p>A root element with <code>match_parent</code> for both width and height fills its parent (<code>setFillParent(true)</code>). You can also inflate from a string: <code>inflater.inflate("&lt;Button android:text='OK'/&gt;")</code>.</p>
+<h2 id="supported-tags">Supported tags<a class="anchor" href="#supported-tags" title="Permanent link">#</a></h2>
+<p>Fully qualified Material / AndroidX names (for example <code>com.google.android.material.card.MaterialCardView</code>) are accepted too; only the last part is used.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Creates</th>
+<th>Specific attributes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LinearLayout</code>, <code>LinearLayoutCompat</code></td>
+<td><code>LinearLayout</code></td>
+<td><code>orientation</code>, <code>gravity</code>, <code>spacing</code></td>
+</tr>
+<tr>
+<td><code>FrameLayout</code>, <code>RelativeLayout</code><em>, <code>ConstraintLayout</code></em>, <code>CoordinatorLayout</code>*</td>
+<td><code>FrameLayout</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>FlowLayout</code>, <code>ChipGroup</code></td>
+<td><code>FlowLayout</code></td>
+<td><code>spacing</code>, <code>chipSpacing</code></td>
+</tr>
+<tr>
+<td><code>ScrollView</code>, <code>NestedScrollView</code>, <code>HorizontalScrollView</code></td>
+<td><code>ScrollView</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>CardView</code>, <code>MaterialCardView</code></td>
+<td><code>CardView</code></td>
+<td><code>cardStyle</code> (elevated / filled / outlined), <code>cardCornerRadius</code>, <code>cardElevation</code>, <code>cardBackgroundColor</code>, <code>contentPadding</code></td>
+</tr>
+<tr>
+<td><code>TextView</code>, <code>MaterialTextView</code></td>
+<td><code>TextView</code></td>
+<td><code>text</code>, <code>textAppearance</code>, <code>textSize</code>, <code>textColor</code>, <code>textStyle</code>, <code>gravity</code>, <code>textAlignment</code>, <code>maxLines</code>, <code>lines</code>, <code>singleLine</code>, <code>maxWidth</code></td>
+</tr>
+<tr>
+<td><code>Button</code>, <code>MaterialButton</code></td>
+<td><code>Button</code></td>
+<td><code>text</code>, <code>style</code> / <code>buttonStyle</code> (filled, tonal, outlined, text, elevated), <code>icon</code>, <code>cornerRadius</code>, <code>backgroundTint</code>, <code>textColor</code>, <code>textSize</code></td>
+</tr>
+<tr>
+<td><code>ImageButton</code>, <code>IconButton</code></td>
+<td><code>IconButton</code></td>
+<td><code>icon</code> / <code>src</code>, <code>style</code>, <code>tint</code></td>
+</tr>
+<tr>
+<td><code>FloatingActionButton</code>, <code>ExtendedFloatingActionButton</code>, <code>Fab</code></td>
+<td><code>Fab</code></td>
+<td><code>icon</code> / <code>src</code>, <code>text</code>, <code>fabSize</code> (mini, normal, large), <code>backgroundTint</code>, <code>tint</code></td>
+</tr>
+<tr>
+<td><code>EditText</code>, <code>TextInputEditText</code>, <code>TextInputLayout</code></td>
+<td><code>EditText</code></td>
+<td><code>hint</code>, <code>text</code>, <code>inputType</code>, <code>password</code>, <code>maxLength</code>, <code>startIcon</code>, <code>endIcon</code>, <code>helperText</code>, <code>error</code>, <code>style</code> / <code>boxStyle</code> (filled)</td>
+</tr>
+<tr>
+<td><code>CheckBox</code>, <code>RadioButton</code></td>
+<td>same</td>
+<td><code>text</code>, <code>checked</code></td>
+</tr>
+<tr>
+<td><code>RadioGroup</code></td>
+<td><code>RadioGroup</code></td>
+<td><code>orientation</code></td>
+</tr>
+<tr>
+<td><code>Switch</code>, <code>SwitchCompat</code>, <code>MaterialSwitch</code></td>
+<td><code>Switch</code></td>
+<td><code>text</code>, <code>checked</code></td>
+</tr>
+<tr>
+<td><code>Slider</code>, <code>SeekBar</code></td>
+<td><code>Slider</code></td>
+<td><code>valueFrom</code>/<code>valueTo</code>/<code>value</code>/<code>stepSize</code>, or <code>max</code>/<code>progress</code></td>
+</tr>
+<tr>
+<td><code>Chip</code></td>
+<td><code>Chip</code></td>
+<td><code>text</code>, <code>chipIcon</code>, <code>checkable</code>, <code>checked</code></td>
+</tr>
+<tr>
+<td><code>ProgressBar</code>, <code>LinearProgressIndicator</code>, <code>CircularProgressIndicator</code></td>
+<td><code>ProgressBar</code></td>
+<td><code>progress</code>, <code>max</code>, <code>indeterminate</code>, <code>style</code> (horizontal)</td>
+</tr>
+<tr>
+<td><code>ImageView</code>, <code>ShapeableImageView</code>, <code>Icon</code>, <code>IconView</code></td>
+<td><code>ImageView</code> or <code>IconView</code></td>
+<td><code>src</code>, <code>scaleType</code>, <code>cornerRadius</code>, <code>tint</code>, <code>iconSize</code></td>
+</tr>
+<tr>
+<td><code>Divider</code>, <code>MaterialDivider</code></td>
+<td><code>Divider</code></td>
+<td><code>orientation</code>, <code>dividerColor</code></td>
+</tr>
+<tr>
+<td><code>Space</code></td>
+<td><code>Space</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>RecyclerView</code>, <code>ListView</code>, <code>GridView</code></td>
+<td><code>RecyclerView</code></td>
+<td><code>orientation</code>, <code>spanCount</code> / <code>numColumns</code>, <code>spacing</code>, <code>dividers</code></td>
+</tr>
+<tr>
+<td><code>ViewPager</code>, <code>ViewPager2</code></td>
+<td><code>ViewPager</code></td>
+<td>children become pages</td>
+</tr>
+<tr>
+<td><code>TabLayout</code></td>
+<td><code>TabLayout</code></td>
+<td><code>tabMode</code> (fixed / scrollable); children <code>&lt;TabItem text icon /&gt;</code></td>
+</tr>
+<tr>
+<td><code>Toolbar</code>, <code>MaterialToolbar</code></td>
+<td><code>Toolbar</code></td>
+<td><code>title</code>, <code>titleCentered</code>, <code>navigationIcon</code>, <code>onNavigationClick</code>; children <code>&lt;item icon id onClick /&gt;</code></td>
+</tr>
+<tr>
+<td><code>BottomNavigationView</code></td>
+<td><code>BottomNavigationView</code></td>
+<td>children <code>&lt;item icon title /&gt;</code></td>
+</tr>
+<tr>
+<td><code>NavigationView</code></td>
+<td><code>NavigationView</code></td>
+<td>children <code>&lt;item icon title onClick /&gt;</code>, <code>&lt;divider /&gt;</code>, <code>&lt;section title /&gt;</code>, any view as header</td>
+</tr>
+<tr>
+<td><code>DrawerLayout</code></td>
+<td><code>DrawerLayout</code></td>
+<td>first child = content, second = drawer</td>
+</tr>
+<tr>
+<td><code>include</code></td>
+<td>the included layout</td>
+<td><code>layout="@layout/name"</code> (file <code>name.xml</code> next to the current one)</td>
+</tr>
+</tbody>
+</table></div>
+<p>* These layouts are mapped to <code>FrameLayout</code>: their children are stacked and positioned with <code>layout_gravity</code> and margins. Relative and constraint rules are not supported.</p>
+<p>A tag with a dot that is not a known name is treated as a class name and instantiated with its no-argument constructor, so your own <code>Actor</code> classes work out of the box.</p>
+<h2 id="common-attributes">Common attributes<a class="anchor" href="#common-attributes" title="Permanent link">#</a></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>@+id/name</code> or <code>name</code>; look it up with <code>Views.find(root, "name")</code></td>
+</tr>
+<tr>
+<td><code>layout_width</code>, <code>layout_height</code></td>
+<td><code>match_parent</code>, <code>wrap_content</code>, or a dimension</td>
+</tr>
+<tr>
+<td><code>layout_weight</code>, <code>layout_gravity</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_margin</code>, <code>layout_marginHorizontal</code>, <code>layout_marginVertical</code>, <code>layout_marginStart/End/Left/Right/Top/Bottom</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>padding</code>, <code>paddingHorizontal</code>, <code>paddingVertical</code>, <code>paddingStart/End/Left/Right/Top/Bottom</code></td>
+<td>layouts and <code>TextView</code></td>
+</tr>
+<tr>
+<td><code>background</code></td>
+<td>a colour (layouts)</td>
+</tr>
+<tr>
+<td><code>cornerRadius</code>, <code>elevation</code>, <code>strokeColor</code>, <code>strokeWidth</code>, <code>clipChildren</code></td>
+<td>layouts</td>
+</tr>
+<tr>
+<td><code>onClick</code></td>
+<td>method name on the handler object; adds a ripple to layouts</td>
+</tr>
+<tr>
+<td><code>clickable</code></td>
+<td>gives a layout a ripple without a handler</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td>anything but <code>visible</code> hides the view</td>
+</tr>
+<tr>
+<td><code>enabled</code>, <code>alpha</code></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="values">Values<a class="anchor" href="#values" title="Permanent link">#</a></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Accepted forms</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dimensions</td>
+<td><code>16dp</code>, <code>16dip</code>, <code>14sp</code>, <code>24px</code>, a bare number (dp), <code>@dimen/name</code></td>
+</tr>
+<tr>
+<td>Colours</td>
+<td><code>#RGB</code>, <code>#RRGGBB</code>, <code>#AARRGGBB</code>, <code>@color/primary</code>, <code>?attr/colorPrimary</code>, <code>?colorOnSurface</code>, <code>@android:color/white</code>, <code>transparent</code></td>
+</tr>
+<tr>
+<td>Text</td>
+<td>plain text, <code>@string/name</code>, escapes <code>\n</code> <code>\t</code> <code>\'</code></td>
+</tr>
+<tr>
+<td>Icons</td>
+<td><code>add</code>, <code>ic_add</code>, <code>@drawable/ic_add</code>, or a hex code point</td>
+</tr>
+<tr>
+<td>Text appearance</td>
+<td><code>titleLarge</code>, <code>bodyMedium</code>, <code>@style/TextAppearance.Material3.HeadlineSmall</code> …</td>
+</tr>
+</tbody>
+</table></div>
+<p>Theme colour roles (<code>primary</code>, <code>onSurfaceVariant</code>, <code>surfaceContainerHigh</code> …) resolve to the live theme colours, so inflated views follow theme changes. Register your own values:</p>
+<pre class="code" data-lang="java"><code class="language-java">LayoutInflater inflater = new LayoutInflater()
+        .putString(&quot;app_name&quot;, &quot;My App&quot;)
+        .putColor(&quot;brand&quot;, Color.valueOf(&quot;FF6D00&quot;))
+        .putDimen(&quot;gutter&quot;, 20)                           // in dp
+        .setDrawables(name -&gt; atlas.findRegion(name));    // for &lt;ImageView android:src=&quot;@drawable/x&quot;&gt;
+</code></pre>
+<h2 id="onclick-handlers">onClick handlers<a class="anchor" href="#onclick-handlers" title="Permanent link">#</a></h2>
+<p><code>android:onClick="name"</code> calls a public method on the object passed to <code>inflate(file, handler)</code>. The method may take no argument or one argument whose type matches the view. If the method does not exist, inflating throws an exception naming it, so typos show up immediately.</p>
+<h2 id="custom-tags">Custom tags<a class="anchor" href="#custom-tags" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">LayoutInflater.register(&quot;RatingBar&quot;, (attrs, inflater) -&gt;
+        new RatingBar(attrs.integer(&quot;stars&quot;, 5), attrs.color(&quot;color&quot;)));
+</code></pre>
+<p><code>attrs</code> offers <code>string</code>, <code>dimen</code>, <code>color</code>, <code>bool</code>, <code>integer</code>, <code>number</code>, <code>icon</code> and <code>raw</code>. Common attributes (<code>id</code>, <code>layout_*</code>, padding, background, <code>onClick</code> …) are applied after your factory returns. If your view is a <code>ViewGroup</code>, its XML children are added automatically.</p>
+    <div class="pager"><a class="prev" href="navigation.html"><span>Previous</span>Navigation</a><a class="next" href="theming.html"><span>Next</span>Theming &amp; RTL</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/08-xml.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#supported-tags">Supported tags</a><a href="#common-attributes">Common attributes</a><a href="#values">Values</a><a href="#onclick-handlers">onClick handlers</a><a href="#custom-tags">Custom tags</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

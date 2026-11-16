@@ -1,0 +1,59 @@
+plugins { id 'com.android.application' version '8.10.1' }
+
+android {
+    namespace 'com.star4droid.compat.demo'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'com.star4droid.compat.demo'
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+    }
+    sourceSets {
+        main {
+            assets.srcDirs = ['../assets']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+configurations { natives }
+
+dependencies {
+    implementation project(':demo:core')
+    implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxDemoVersion"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxDemoVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxDemoVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxDemoVersion:natives-x86_64"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxDemoVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxDemoVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxDemoVersion:natives-x86_64"
+}
+
+// Unpacks the native libraries of libGDX and FreeType into libs/<abi>/ so they are packaged in the APK.
+tasks.register('copyAndroidNatives') {
+    doFirst {
+        configurations.natives.copy().files.each { jar ->
+            def abi = ['armeabi-v7a', 'arm64-v8a', 'x86_64'].find { jar.name.endsWith("natives-${it}.jar") }
+            if (abi != null) {
+                copy {
+                    from zipTree(jar)
+                    into file("libs/$abi")
+                    include '*.so'
+                }
+            }
+        }
+    }
+}
+tasks.matching { it.name.contains('merge') && it.name.contains('JniLibFolders') }.configureEach { dependsOn 'copyAndroidNatives' }

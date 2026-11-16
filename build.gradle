@@ -1,0 +1,6 @@
+allprojects {
+    group = 'com.github.star4droid'
+    // JitPack passes the release tag in VERSION
+    version = System.getenv('VERSION') ?: '1.0.0'
+    repositories { google(); mavenCentral() }
+}

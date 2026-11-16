@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lists &amp; pages · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. Lists &amp; pages.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="" href="index.html">Overview</a>
+    <a class="" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="" href="widgets.html">Widgets</a>
+    <a class="active" href="lists.html">Lists &amp; pages</a>
+    <a class="" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="" href="xml.html">XML layouts</a>
+    <a class="" href="theming.html">Theming &amp; RTL</a>
+    <a class="" href="performance.html">Performance</a>
+    <a class="" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content">
+<h1 id="lists-grids-pages">Lists, grids &amp; pages<a class="anchor" href="#lists-grids-pages" title="Permanent link">#</a></h1>
+<h2 id="recyclerview">RecyclerView<a class="anchor" href="#recyclerview" title="Permanent link">#</a></h2>
+<p><code>RecyclerView</code> creates only the rows that are on screen and re-binds them while scrolling, so 100 000 items cost the same as 10. It supports vertical lists, vertical grids and horizontal lists.</p>
+<p><img class="shot right" src="images/05_list.png" alt="A list with dividers"></p>
+<h3 id="the-simple-way-listadapter">The simple way: ListAdapter<a class="anchor" href="#the-simple-way-listadapter" title="Permanent link">#</a></h3>
+<p>For a list of items with one kind of row:</p>
+<pre class="code" data-lang="java"><code class="language-java">Array&lt;Contact&gt; contacts = loadContacts();
+
+RecyclerView list = new RecyclerView();
+list.setOnItemClick(position -&gt; open(contacts.get(position)));   // before setAdapter
+list.setAdapter(new RecyclerView.ListAdapter&lt;&gt;(contacts,
+        () -&gt; new ContactRow(),                                  // creates a row
+        (row, contact, position) -&gt; row.bind(contact)));         // fills it
+</code></pre>
+<p>A row is any actor, usually a small layout that keeps references to its children:</p>
+<pre class="code" data-lang="java"><code class="language-java">class ContactRow extends LinearLayout {
+    final TextView name = new TextView(&quot;&quot;, Typography.BODY_LARGE);
+    final TextView phone = new TextView(&quot;&quot;, Typography.BODY_MEDIUM);
+
+    ContactRow () {
+        super(VERTICAL);
+        setPadding(dp(16), dp(8));
+        add(name).matchWidth();
+        add(phone.setTextColor(Compat.theme.onSurfaceVariant)).matchWidth();
+    }
+
+    void bind (Contact c) {
+        name.setText(c.name);
+        phone.setText(c.phone);
+    }
+}
+</code></pre>
+<div class="clear"></div>
+
+<h3 id="full-control-adapter">Full control: Adapter<a class="anchor" href="#full-control-adapter" title="Permanent link">#</a></h3>
+<p>Subclass <code>RecyclerView.Adapter</code> for several row types or different heights, exactly as on Android:</p>
+<pre class="code" data-lang="java"><code class="language-java">list.setAdapter(new RecyclerView.Adapter&lt;RecyclerView.ViewHolder&gt;() {
+    @Override public int getItemCount () { return messages.size; }
+
+    @Override public int getItemViewType (int position) {
+        return messages.get(position).mine ? 1 : 0;
+    }
+
+    @Override public RecyclerView.ViewHolder onCreateViewHolder (int viewType) {
+        return new RecyclerView.ViewHolder(viewType == 1 ? new MyBubble() : new TheirBubble());
+    }
+
+    @Override public void onBindViewHolder (RecyclerView.ViewHolder holder, int position) {
+        ((Bubble)holder.itemView).bind(messages.get(position));
+    }
+
+    // Optional: return an exact height to skip measuring (-1 = measure the view type once)
+    @Override public float getItemSize (int position, float crossSize) {
+        return dp(64);
+    }
+});
+</code></pre>
+<p>After changing the data call <code>notifyDataSetChanged()</code>, <code>notifyItemChanged(position)</code>, or <code>notifyItemRangeChanged()</code> (items appended or removed; visible rows keep their views).</p>
+<div class="note">Rows are measured once per view type. If rows of the same type can have different heights, override <code>getItemSize</code>.</div>
+
+<h3 id="grids-and-horizontal-lists">Grids and horizontal lists<a class="anchor" href="#grids-and-horizontal-lists" title="Permanent link">#</a></h3>
+<pre class="code" data-lang="java"><code class="language-java">RecyclerView grid = new RecyclerView();
+grid.setSpanCount(3);          // columns
+grid.setSpacing(dp(8));        // gap between items
+grid.setPadding(dp(12));
+
+RecyclerView carousel = new RecyclerView(false);   // horizontal
+</code></pre>
+<h3 id="dividers-refresh-and-endless-loading">Dividers, refresh and endless loading<a class="anchor" href="#dividers-refresh-and-endless-loading" title="Permanent link">#</a></h3>
+<pre class="code" data-lang="java"><code class="language-java">list.setDividers(true, dp(72));          // inset from the start edge
+list.setOnRefresh(() -&gt; reload(() -&gt; list.setRefreshing(false)));   // pull to refresh
+list.setOnEndReached(() -&gt; loadNextPage());                          // once per data change
+list.setOnScroll((view, scroll, delta) -&gt; {
+    if (delta &gt; 0) fab.shrink(); else if (delta &lt; 0) fab.extend();
+});
+</code></pre>
+<h3 id="scrolling-from-code">Scrolling from code<a class="anchor" href="#scrolling-from-code" title="Permanent link">#</a></h3>
+<pre class="code" data-lang="java"><code class="language-java">list.scrollToPosition(250);
+list.smoothScrollToPosition(0);
+int first = list.getFirstVisiblePosition();
+</code></pre>
+<h2 id="viewpager">ViewPager<a class="anchor" href="#viewpager" title="Permanent link">#</a></h2>
+<p>Swipe between pages with snapping. Only the visible page(s) are laid out, drawn and touchable.</p>
+<pre class="code" data-lang="java"><code class="language-java">ViewPager pager = new ViewPager();
+pager.addPage(homePage);                          // an existing actor
+pager.addPage(index -&gt; buildStatisticsPage());    // built the first time the user gets near it
+
+pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    @Override public void onPageScrolled (float position) { }
+    @Override public void onPageSelected (int index) { updateTitle(index); }
+});
+pager.setCurrentItem(2);           // animated
+pager.setCurrentItem(2, false);    // jump
+pager.setSwipeEnabled(false);
+</code></pre>
+<p>A vertical list inside a page scrolls normally; the pager only takes horizontal drags.</p>
+<h2 id="tablayout">TabLayout<a class="anchor" href="#tablayout" title="Permanent link">#</a></h2>
+<p><img class="shot right" src="images/10_grid.png" alt="Scrollable tabs over a grid"></p>
+<pre class="code" data-lang="java"><code class="language-java">TabLayout tabs = new TabLayout(TabLayout.MODE_SCROLLABLE);   // or MODE_FIXED
+tabs.addTab(&quot;Home&quot;);
+tabs.addTab(&quot;Settings&quot;, Icons.SETTINGS);   // icon + text
+tabs.setupWithViewPager(pager);            // keeps both in sync, indicator follows the swipe
+</code></pre>
+<p>Without a pager use <code>setOnTabSelected(index -&gt; ...)</code> and <code>selectTab(index)</code>. Colours: <code>setColors(selected, unselected, indicator)</code>.</p>
+<div class="clear"></div>
+    <div class="pager"><a class="prev" href="widgets.html"><span>Previous</span>Widgets</a><a class="next" href="overlays.html"><span>Next</span>Overlays</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/05-lists.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#recyclerview">RecyclerView</a><a href="#viewpager">ViewPager</a><a href="#tablayout">TabLayout</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

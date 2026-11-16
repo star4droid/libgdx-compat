@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theming &amp; RTL · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. Theming &amp; RTL.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="" href="index.html">Overview</a>
+    <a class="" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="" href="widgets.html">Widgets</a>
+    <a class="" href="lists.html">Lists &amp; pages</a>
+    <a class="" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="" href="xml.html">XML layouts</a>
+    <a class="active" href="theming.html">Theming &amp; RTL</a>
+    <a class="" href="performance.html">Performance</a>
+    <a class="" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content">
+<h1 id="theming-typography-rtl">Theming, typography &amp; RTL<a class="anchor" href="#theming-typography-rtl" title="Permanent link">#</a></h1>
+<h2 id="the-theme">The theme<a class="anchor" href="#the-theme" title="Permanent link">#</a></h2>
+<p><code>Compat.theme</code> holds the Material 3 colour roles. Widgets keep references to these <code>Color</code> objects, so changing them restyles the whole UI immediately, with no rebuild.</p>
+<div class="pair">
+<img src="images/18_dark.png" alt="Dark theme">
+<img src="images/19_seed_theme.png" alt="Theme generated from a seed colour">
+</div>
+
+<pre class="code" data-lang="java"><code class="language-java">Compat.theme.set(Theme.dark());                                        // baseline dark scheme
+Compat.theme.set(Theme.light());
+Compat.theme.set(Theme.fromSeed(Color.valueOf(&quot;00897B&quot;), false));     // full scheme from one brand colour
+Compat.theme.primary.set(Color.valueOf(&quot;E65100&quot;));                     // change one role
+</code></pre>
+<p>Use <code>Compat.init(config)</code> with <code>config.dark = true</code> to start in dark mode.</p>
+<h3 id="colour-roles">Colour roles<a class="anchor" href="#colour-roles" title="Permanent link">#</a></h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Roles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary</td>
+<td><code>primary</code>, <code>onPrimary</code>, <code>primaryContainer</code>, <code>onPrimaryContainer</code></td>
+</tr>
+<tr>
+<td>Secondary</td>
+<td><code>secondary</code>, <code>onSecondary</code>, <code>secondaryContainer</code>, <code>onSecondaryContainer</code></td>
+</tr>
+<tr>
+<td>Tertiary</td>
+<td><code>tertiary</code>, <code>onTertiary</code>, <code>tertiaryContainer</code>, <code>onTertiaryContainer</code></td>
+</tr>
+<tr>
+<td>Error</td>
+<td><code>error</code>, <code>onError</code>, <code>errorContainer</code>, <code>onErrorContainer</code></td>
+</tr>
+<tr>
+<td>Surfaces</td>
+<td><code>background</code>, <code>onBackground</code>, <code>surface</code>, <code>onSurface</code>, <code>surfaceVariant</code>, <code>onSurfaceVariant</code></td>
+</tr>
+<tr>
+<td>Containers</td>
+<td><code>surfaceContainerLowest</code>, <code>surfaceContainerLow</code>, <code>surfaceContainer</code>, <code>surfaceContainerHigh</code>, <code>surfaceContainerHighest</code></td>
+</tr>
+<tr>
+<td>Outlines</td>
+<td><code>outline</code>, <code>outlineVariant</code></td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>inverseSurface</code>, <code>inverseOnSurface</code>, <code>inversePrimary</code></td>
+</tr>
+<tr>
+<td>Other</td>
+<td><code>scrim</code>, <code>shadow</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Look roles up by name with <code>Compat.theme.color("onSurfaceVariant")</code> (snake_case works too).</p>
+<div class="note">When you colour your own views, pass the theme's <code>Color</code> object itself (<code>setBackground(Compat.theme.surface)</code>) rather than a copy, so the view follows theme changes.</div>
+
+<h3 id="shapes">Shapes<a class="anchor" href="#shapes" title="Permanent link">#</a></h3>
+<p>Corner sizes in dp: <code>cornerExtraSmall</code> (4), <code>cornerSmall</code> (8), <code>cornerMedium</code> (12), <code>cornerLarge</code> (16), <code>cornerExtraLarge</code> (28). Cards, dialogs, sheets and menus read them.</p>
+<h2 id="typography">Typography<a class="anchor" href="#typography" title="Permanent link">#</a></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Size (sp)</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DISPLAY_SMALL</code></td>
+<td>36</td>
+<td>regular</td>
+</tr>
+<tr>
+<td><code>HEADLINE_MEDIUM</code></td>
+<td>28</td>
+<td>regular</td>
+</tr>
+<tr>
+<td><code>HEADLINE_SMALL</code></td>
+<td>24</td>
+<td>regular</td>
+</tr>
+<tr>
+<td><code>TITLE_LARGE</code></td>
+<td>22</td>
+<td>regular</td>
+</tr>
+<tr>
+<td><code>TITLE_MEDIUM</code></td>
+<td>16</td>
+<td>medium</td>
+</tr>
+<tr>
+<td><code>TITLE_SMALL</code></td>
+<td>14</td>
+<td>medium</td>
+</tr>
+<tr>
+<td><code>BODY_LARGE</code></td>
+<td>16</td>
+<td>regular</td>
+</tr>
+<tr>
+<td><code>BODY_MEDIUM</code></td>
+<td>14</td>
+<td>regular</td>
+</tr>
+<tr>
+<td><code>BODY_SMALL</code></td>
+<td>12</td>
+<td>regular</td>
+</tr>
+<tr>
+<td><code>LABEL_LARGE</code></td>
+<td>14</td>
+<td>medium</td>
+</tr>
+<tr>
+<td><code>LABEL_MEDIUM</code></td>
+<td>12</td>
+<td>medium</td>
+</tr>
+<tr>
+<td><code>LABEL_SMALL</code></td>
+<td>11</td>
+<td>medium</td>
+</tr>
+</tbody>
+</table></div>
+<p>Change <code>Typography.SIZE[...]</code> and <code>Typography.MEDIUM[...]</code> before building the UI to adjust the scale.</p>
+<h2 id="fonts">Fonts<a class="anchor" href="#fonts" title="Permanent link">#</a></h2>
+<p>The bundled font is IBM Plex Sans Arabic (Latin + Arabic) in two weights. Glyphs are rasterised on demand, only for the characters and sizes you actually use, so there is no character list to maintain.</p>
+<pre class="code" data-lang="java"><code class="language-java">Compat.Config config = new Compat.Config();
+config.regularFont = Gdx.files.internal(&quot;fonts/Tajawal-Regular.ttf&quot;);
+config.mediumFont = Gdx.files.internal(&quot;fonts/Tajawal-Medium.ttf&quot;);
+Compat.init(config);
+</code></pre>
+<h2 id="arabic-and-right-to-left">Arabic and right-to-left<a class="anchor" href="#arabic-and-right-to-left" title="Permanent link">#</a></h2>
+<div class="pair">
+<img src="images/rtl_01_widgets.png" alt="RTL widgets">
+<img src="images/rtl_03_list.png" alt="RTL list">
+</div>
+
+<p>Every text component shapes Arabic letters (initial, medial and final forms, lam-alef ligatures) and reorders mixed Arabic / Latin / numbers automatically. A paragraph that starts with Arabic aligns to the right by itself.</p>
+<p>To mirror the whole interface, enable RTL before building it:</p>
+<pre class="code" data-lang="java"><code class="language-java">Compat.Config config = new Compat.Config();
+config.rtl = true;            // or Compat.setRtl(true) before creating views
+Compat.init(config);
+</code></pre>
+<p>In RTL mode rows run right to left, <code>START</code>/<code>END</code> gravities and margins flip, the drawer opens from the right, tabs and pagers swipe the other way, and text fields put their icons on the mirrored sides.</p>
+<div class="note"><strong>Using another font for Arabic?</strong> It must contain the Arabic presentation forms (U+FE70–U+FEFF), because libGDX draws pre-shaped glyphs. Cairo, Tajawal, Almarai and Noto Sans Arabic all have them.</div>
+
+<p>Limitations: diacritics (harakat) are centred over their letter approximately because libGDX cannot read a font's mark positioning tables, and other complex scripts (Devanagari, Thai …) are not shaped.</p>
+    <div class="pager"><a class="prev" href="xml.html"><span>Previous</span>XML layouts</a><a class="next" href="performance.html"><span>Next</span>Performance</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/09-theming.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#the-theme">The theme</a><a href="#typography">Typography</a><a href="#fonts">Fonts</a><a href="#arabic-and-right-to-left">Arabic and right-to-left</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

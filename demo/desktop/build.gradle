@@ -1,0 +1,13 @@
+plugins { id 'application' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+dependencies {
+    implementation project(':demo:core')
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxDemoVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxDemoVersion:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxDemoVersion:natives-desktop"
+}
+sourceSets.main.resources.srcDirs += [rootProject.file('demo/assets')]
+application { mainClass = 'com.star4droid.compat.demo.DesktopLauncher' }
+run { workingDir = rootProject.projectDir; standardInput = System.in }
+task printCp { doLast { println "CP=" + sourceSets.main.runtimeClasspath.asPath } }
+task writeCp { dependsOn classes, ':demo:core:jar', ':compat:jar'; doLast { rootProject.file('build').mkdirs(); rootProject.file('build/demo.cp').text = sourceSets.main.runtimeClasspath.asPath } }

@@ -1,0 +1,8 @@
+pluginManagement {
+    repositories { google(); mavenCentral(); gradlePluginPortal() }
+}
+rootProject.name = 'libgdx-compat'
+include 'compat', 'demo:core', 'demo:desktop'
+// The Android gallery is only added when an Android SDK is configured (local.properties or ANDROID_HOME).
+// Skipped on JitPack, which only needs to publish the library.
+if (!System.getenv('JITPACK') && (file('local.properties').exists() || System.getenv('ANDROID_HOME') || System.getenv('ANDROID_SDK_ROOT'))) include 'demo:android'

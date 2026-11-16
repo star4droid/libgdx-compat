@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overlays · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. Overlays.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="" href="index.html">Overview</a>
+    <a class="" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="" href="widgets.html">Widgets</a>
+    <a class="" href="lists.html">Lists &amp; pages</a>
+    <a class="active" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="" href="xml.html">XML layouts</a>
+    <a class="" href="theming.html">Theming &amp; RTL</a>
+    <a class="" href="performance.html">Performance</a>
+    <a class="" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content">
+<h1 id="overlays">Overlays<a class="anchor" href="#overlays" title="Permanent link">#</a></h1>
+<p>Overlays float above the rest of the UI. They are added to the stage when shown, animate in and out, and close with the back key (Android BACK / desktop ESC) or a tap outside unless you make them non-cancelable.</p>
+<h2 id="bottomsheet">BottomSheet<a class="anchor" href="#bottomsheet" title="Permanent link">#</a></h2>
+<p><img class="shot right" src="images/13_sheet_collapsed.png" alt="Bottom sheet, collapsed"></p>
+<p>A sheet that slides up from the bottom and follows the finger between three states: hidden, collapsed (peek height) and expanded.</p>
+<pre class="code" data-lang="java"><code class="language-java">BottomSheet sheet = new BottomSheet(content);
+sheet.show(stage);
+
+// or in one line
+BottomSheet.show(stage, content);
+</code></pre>
+<p>Options (the <code>BottomSheet</code> setters return the sheet, so they chain):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setPeekHeight(px)</code></td>
+<td>height of the collapsed state; default: the whole sheet if it is short, otherwise half the screen</td>
+</tr>
+<tr>
+<td><code>setFullHeight(true)</code></td>
+<td>expand to the full available height instead of wrapping the content (use it for lists)</td>
+</tr>
+<tr>
+<td><code>setHideable(false)</code></td>
+<td>dragging down stops at the collapsed state</td>
+</tr>
+<tr>
+<td><code>setDragHandle(false)</code></td>
+<td>hide the small handle bar</td>
+</tr>
+<tr>
+<td><code>setDraggable(false)</code></td>
+<td>no dragging at all</td>
+</tr>
+<tr>
+<td><code>setModal(false)</code></td>
+<td>persistent sheet: no dimming, touches reach the screen behind</td>
+</tr>
+<tr>
+<td><code>setSheetBackground(color)</code></td>
+<td>sheet colour</td>
+</tr>
+<tr>
+<td><code>setCancelable(false)</code></td>
+<td>outside tap and back key do nothing</td>
+</tr>
+</tbody>
+</table></div>
+<p>Control it from code with <code>expand()</code>, <code>collapse()</code> and <code>dismiss()</code>, and listen to it:</p>
+<pre class="code" data-lang="java"><code class="language-java">sheet.setCallback(new BottomSheet.Callback() {
+    @Override public void onStateChanged (BottomSheet s, int state) {
+        if (state == BottomSheet.EXPANDED) loadMore();
+    }
+    @Override public void onSlide (BottomSheet s, float visibleHeight) {
+        header.getColor().a = visibleHeight / s.getStage().getHeight();
+    }
+});
+sheet.setOnDismiss(() -&gt; refresh());
+</code></pre>
+<div class="clear"></div>
+
+<h3 id="lists-inside-a-sheet">Lists inside a sheet<a class="anchor" href="#lists-inside-a-sheet" title="Permanent link">#</a></h3>
+<p><img class="shot right" src="images/14_sheet_expanded.png" alt="Bottom sheet, expanded with a list"></p>
+<p>Put a <code>RecyclerView</code> or <code>ScrollView</code> inside and it just works: dragging up first expands the sheet, then scrolls the list; dragging down scrolls the list back to its top, then collapses and hides the sheet.</p>
+<pre class="code" data-lang="java"><code class="language-java">LinearLayout column = LinearLayout.vertical();
+column.add(new TextView(&quot;Share via&quot;, Typography.TITLE_LARGE)).margins(dp(24), 0, dp(24), dp(8));
+column.add(shareList).matchWidth().weight(1).height(0);
+
+new BottomSheet(column).setFullHeight(true).show(stage);
+</code></pre>
+<div class="clear"></div>
+
+<h2 id="alertdialog">AlertDialog<a class="anchor" href="#alertdialog" title="Permanent link">#</a></h2>
+<p><img class="shot right" src="images/16_dialog.png" alt="Alert dialog"></p>
+<pre class="code" data-lang="java"><code class="language-java">new AlertDialog()
+        .setIcon(Icons.DELETE)
+        .setTitle(&quot;Delete item?&quot;)
+        .setMessage(&quot;This cannot be undone.&quot;)
+        .setNegativeButton(&quot;Cancel&quot;, null)
+        .setPositiveButton(&quot;Delete&quot;, () -&gt; delete())
+        .show(stage);
+</code></pre>
+<ul>
+<li><code>setNeutralButton(text, action)</code> adds a third button on the start side.</li>
+<li><code>setItems(new CharSequence[] {"Camera", "Gallery"}, index -&gt; pick(index))</code> shows a list of choices.</li>
+<li><code>setView(actor)</code> puts any custom content (a form, a slider…) between the message and the buttons.</li>
+<li><code>cancelable(false)</code> forces the user to press a button.</li>
+</ul>
+<div class="clear"></div>
+
+<h2 id="popupmenu">PopupMenu<a class="anchor" href="#popupmenu" title="Permanent link">#</a></h2>
+<p><img class="shot right" src="images/15_popup_menu.png" alt="Popup menu"></p>
+<p>A drop-down menu anchored to a view; it picks the side that fits on screen.</p>
+<pre class="code" data-lang="java"><code class="language-java">moreButton.setOnClick(() -&gt; new PopupMenu()
+        .add(&quot;Edit&quot;, Icons.EDIT, () -&gt; edit())
+        .add(&quot;Share&quot;, Icons.SHARE, () -&gt; share())
+        .addDivider()
+        .add(&quot;Delete&quot;, Icons.DELETE, () -&gt; delete())
+        .show(moreButton));
+</code></pre>
+<p>Use <code>showAt(stage, x, y)</code> for a context menu at a touch position.</p>
+<div class="clear"></div>
+
+<h2 id="snackbar">Snackbar<a class="anchor" href="#snackbar" title="Permanent link">#</a></h2>
+<p><img class="shot right" src="images/07_item_click_snackbar.png" alt="Snackbar"></p>
+<p>A short message at the bottom of the screen. Only one is shown per stage; a new one replaces the old one.</p>
+<pre class="code" data-lang="java"><code class="language-java">Snackbar.make(stage, &quot;Message archived&quot;, Snackbar.LENGTH_LONG)
+        .setAction(&quot;Undo&quot;, () -&gt; restore())
+        .setBottomOffset(dp(80))    // keep it above a bottom navigation bar
+        .show();
+</code></pre>
+<p>Durations: <code>LENGTH_SHORT</code> (2 s), <code>LENGTH_LONG</code> (3.5 s), <code>LENGTH_INDEFINITE</code> (until <code>dismiss()</code>), or any number of seconds.</p>
+<div class="clear"></div>
+
+<h2 id="keyboard-insets">Keyboard insets<a class="anchor" href="#keyboard-insets" title="Permanent link">#</a></h2>
+<p>Overlays keep clear of the on-screen keyboard using <code>Compat.getKeyboardHeight()</code>. On Android the simplest setup is <code>android:windowSoftInputMode="adjustResize"</code> in the manifest (the demo does this); otherwise report the height yourself with <code>Compat.setKeyboardHeight(px)</code>.</p>
+    <div class="pager"><a class="prev" href="lists.html"><span>Previous</span>Lists &amp; pages</a><a class="next" href="navigation.html"><span>Next</span>Navigation</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/06-overlays.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#bottomsheet">BottomSheet</a><a href="#alertdialog">AlertDialog</a><a href="#popupmenu">PopupMenu</a><a href="#snackbar">Snackbar</a><a href="#keyboard-insets">Keyboard insets</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Widgets · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. Widgets.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="" href="index.html">Overview</a>
+    <a class="" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="active" href="widgets.html">Widgets</a>
+    <a class="" href="lists.html">Lists &amp; pages</a>
+    <a class="" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="" href="xml.html">XML layouts</a>
+    <a class="" href="theming.html">Theming &amp; RTL</a>
+    <a class="" href="performance.html">Performance</a>
+    <a class="" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content">
+<h1 id="widgets">Widgets<a class="anchor" href="#widgets" title="Permanent link">#</a></h1>
+<p>Leaf widgets draw themselves directly (no inner actors), which keeps the scene graph small. All of them take <code>setOnClick</code> / <code>setOnLongClick</code>, <code>setEnabled</code>, and an id via <code>.id("name")</code>.</p>
+<h2 id="textview">TextView<a class="anchor" href="#textview" title="Permanent link">#</a></h2>
+<p>Wrapped text with maximum lines and ellipsis, alignment and automatic Arabic shaping.</p>
+<pre class="code" data-lang="java"><code class="language-java">TextView title = new TextView(&quot;Settings&quot;, Typography.TITLE_LARGE);
+TextView body = new TextView(longText, Typography.BODY_MEDIUM)
+        .setTextColor(Compat.theme.onSurfaceVariant)
+        .setMaxLines(2)
+        .setGravity(Gravity.CENTER_HORIZONTAL);
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setText(text)</code></td>
+<td>re-measures only when needed</td>
+</tr>
+<tr>
+<td><code>setTextAppearance(style)</code></td>
+<td>one of the <code>Typography</code> constants</td>
+</tr>
+<tr>
+<td><code>setTextSize(px)</code>, <code>setBold(b)</code>, <code>setTextColor(c)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>setMaxLines(n)</code>, <code>setSingleLine()</code></td>
+<td>extra text ends with …</td>
+</tr>
+<tr>
+<td><code>setGravity(g)</code></td>
+<td>without a horizontal flag the text follows its own direction</td>
+</tr>
+<tr>
+<td><code>setPadding(...)</code>, <code>setMaxWidth(px)</code></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="buttons">Buttons<a class="anchor" href="#buttons" title="Permanent link">#</a></h2>
+<p><img class="shot right" src="images/01_widgets.png" alt="Buttons, FABs and progress indicators"></p>
+<pre class="code" data-lang="java"><code class="language-java">new Button(&quot;Filled&quot;);
+new Button(&quot;Tonal&quot;, Button.TONAL).icon(Icons.ADD);
+new Button(&quot;Outlined&quot;, Button.OUTLINED);
+new Button(&quot;Text&quot;, Button.TEXT);
+new Button(&quot;Elevated&quot;, Button.ELEVATED).icon(Icons.FAVORITE);
+
+Button save = new Button(&quot;Save&quot;)
+        .onClick(() -&gt; save())
+        .colors(myBackground, myTextColor)   // null keeps the style's colour
+        .cornerRadius(dp(8))                 // default: fully rounded
+        .height(dp(48));
+save.setEnabled(false);
+</code></pre>
+<h3 id="iconbutton">IconButton<a class="anchor" href="#iconbutton" title="Permanent link">#</a></h3>
+<pre class="code" data-lang="java"><code class="language-java">new IconButton(Icons.SETTINGS, () -&gt; openSettings());
+new IconButton(Icons.FAVORITE).style(IconButton.FILLED);     // STANDARD, FILLED, TONAL, OUTLINED
+new IconButton(Icons.SHARE).iconColor(Compat.theme.primary);
+</code></pre>
+<h3 id="floating-action-button">Floating action button<a class="anchor" href="#floating-action-button" title="Permanent link">#</a></h3>
+<pre class="code" data-lang="java"><code class="language-java">Fab fab = new Fab(Icons.ADD).onClick(() -&gt; create());
+new Fab(Icons.EDIT).size(Fab.SMALL);                   // SMALL, NORMAL, LARGE
+Fab extended = new Fab(Icons.SEND, &quot;Compose&quot;);         // extended FAB with a label
+
+extended.shrink();   // animate to icon only (e.g. while a list scrolls down)
+extended.extend();   // show the label again
+fab.hide();          // scale out
+fab.show();          // scale in
+</code></pre>
+<div class="clear"></div>
+
+<h2 id="edittext">EditText<a class="anchor" href="#edittext" title="Permanent link">#</a></h2>
+<p><img class="shot right" src="images/04_inputs_typing.png" alt="Text fields"></p>
+<p>A Material text field with a floating label, outlined or filled.</p>
+<pre class="code" data-lang="java"><code class="language-java">EditText name = new EditText(&quot;Name&quot;).setLeadingIcon(Icons.PERSON);
+
+EditText email = new EditText(&quot;Email&quot;)
+        .setStyle(EditText.FILLED)
+        .setKeyboardType(Input.OnscreenKeyboardType.Email);
+
+EditText password = new EditText(&quot;Password&quot;)
+        .setPassword(true)                       // hides text + adds a show/hide toggle
+        .setHelperText(&quot;At least 8 characters&quot;);
+
+EditText amount = new EditText(&quot;Amount&quot;).setNumeric().setMaxLength(8);
+amount.setError(&quot;Invalid number&quot;);               // red state; setError(null) clears it
+
+name.setOnTextChanged((view, text) -&gt; validate(text));
+name.setOnSubmit(() -&gt; next());                  // Enter / Done
+</code></pre>
+<p>Behaviour you get for free:</p>
+<ul>
+<li>tap to place the cursor, drag to select, double-tap to select all;</li>
+<li>long press shows a Cut / Copy / Paste / Select all menu (rename it through <code>EditText.MENU_LABELS</code>);</li>
+<li>keyboard shortcuts on desktop (Ctrl+A/C/X/V, arrows, Home/End);</li>
+<li>tapping outside the field hides the on-screen keyboard;</li>
+<li>Arabic input with correct shaping.</li>
+</ul>
+<p>Other options: <code>setTrailingIcon(icon, onClick)</code>, <code>setFilter(c -&gt; ...)</code>, <code>setContainerColor(c)</code> (when an outlined field sits on a colour other than <code>surface</code>), <code>requestFocus()</code>, <code>clearFocus()</code>, <code>selectAll()</code>, <code>copy()</code>, <code>cut()</code>, <code>paste()</code>.</p>
+<div class="clear"></div>
+
+<h2 id="selection-controls">Selection controls<a class="anchor" href="#selection-controls" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">CheckBox remember = new CheckBox(&quot;Remember me&quot;, true);
+Switch notifications = new Switch(&quot;Notifications&quot;);
+notifications.setOnCheckedChange((button, checked) -&gt; enable(checked));
+
+RadioGroup size = new RadioGroup(LinearLayout.HORIZONTAL);
+size.add(new RadioButton(&quot;Small&quot;));
+size.add(new RadioButton(&quot;Medium&quot;));
+size.add(new RadioButton(&quot;Large&quot;));
+size.check(1);
+size.setOnCheckedChange((group, index) -&gt; setSize(index));
+</code></pre>
+<p><code>setChecked(value)</code> animates; <code>setChecked(value, false)</code> does not. A <code>Switch</code> with a label lays out like a settings row: label at the start, switch at the end.</p>
+<h2 id="slider">Slider<a class="anchor" href="#slider" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">Slider volume = new Slider(0, 100).setStep(5).setValue(40);
+volume.setOnChange((slider, value, fromUser) -&gt; setVolume(value));
+</code></pre>
+<p>A slider keeps horizontal drags to itself, so it works inside a <code>ViewPager</code>.</p>
+<h2 id="chip">Chip<a class="anchor" href="#chip" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">new Chip(&quot;Help&quot;).icon(Icons.HELP_OUTLINE).onClick(() -&gt; help());     // action chip
+Chip filter = new Chip(&quot;Games&quot;).checkable(true);                        // filter chip
+filter.onSelected((chip, selected) -&gt; refresh());
+</code></pre>
+<h2 id="progress-indicators">Progress indicators<a class="anchor" href="#progress-indicators" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">ProgressBar loading = new ProgressBar();                  // linear, indeterminate
+ProgressBar upload = new ProgressBar().setProgress(0.4f);  // determinate (animates to the value)
+ProgressBar spinner = ProgressBar.circular();
+spinner.setIndicatorSize(dp(48), dp(4));
+</code></pre>
+<p>Indeterminate indicators only request frames while they are visible.</p>
+<h2 id="images-and-icons">Images and icons<a class="anchor" href="#images-and-icons" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">ImageView photo = new ImageView(texture)
+        .setScaleType(ImageView.CENTER_CROP)     // FIT_CENTER, CENTER_CROP, FIT_XY, CENTER
+        .setCornerRadius(dp(12));                // anti-aliased, no stencil needed
+ImageView avatar = new ImageView(region).setCornerRadius(dp(20));   // radius = half size → circle
+
+IconView icon = new IconView(Icons.STAR, Compat.theme.primary).setIconSize(dp(32));
+</code></pre>
+<h3 id="icons">Icons<a class="anchor" href="#icons" title="Permanent link">#</a></h3>
+<p>The Material Icons font is bundled (about 2 200 icons). Common icons are constants; any other icon is available by name:</p>
+<pre class="code" data-lang="java"><code class="language-java">char add = Icons.ADD;
+char cart = Icons.get(&quot;shopping_cart&quot;);   // also accepts &quot;ic_shopping_cart&quot; or a hex code like &quot;e8cc&quot;
+</code></pre>
+<p>Browse names at <a href="https://fonts.google.com/icons?icon.set=Material+Icons">fonts.google.com/icons</a>.</p>
+<h3 id="small-images-in-the-shared-atlas">Small images in the shared atlas<a class="anchor" href="#small-images-in-the-shared-atlas" title="Permanent link">#</a></h3>
+<p>Images packed into the library's atlas are drawn in the same batch as everything else, so a list full of avatars still costs a single draw call:</p>
+<pre class="code" data-lang="java"><code class="language-java">TextureRegion avatar = Compat.gfx().pack(pixmap);   // the pixmap is not disposed for you
+</code></pre>
+<p>Keep these images small (a page is 1024 × 1024 by default); large photos are better as normal textures.</p>
+<h2 id="divider-and-space">Divider and Space<a class="anchor" href="#divider-and-space" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">column.add(new Divider()).matchWidth();
+row.add(new Divider(true)).height(dp(24));      // vertical
+row.add(new Space()).weight(1).width(0);         // pushes the next children to the end
+</code></pre>
+    <div class="pager"><a class="prev" href="layouts.html"><span>Previous</span>Layouts</a><a class="next" href="lists.html"><span>Next</span>Lists &amp; pages</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/04-widgets.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#textview">TextView</a><a href="#buttons">Buttons</a><a href="#edittext">EditText</a><a href="#selection-controls">Selection controls</a><a href="#slider">Slider</a><a href="#chip">Chip</a><a href="#progress-indicators">Progress indicators</a><a href="#images-and-icons">Images and icons</a><a href="#divider-and-space">Divider and Space</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+plugins { id 'java-library' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release = 8; options.compilerArgs << '-Xlint:-options' }
+dependencies {
+    api project(':compat')
+    api "com.badlogicgames.gdx:gdx:$gdxDemoVersion"
+    api "com.badlogicgames.gdx:gdx-freetype:$gdxDemoVersion"
+}

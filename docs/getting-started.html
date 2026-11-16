@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting started · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. Getting started.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="" href="index.html">Overview</a>
+    <a class="active" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="" href="widgets.html">Widgets</a>
+    <a class="" href="lists.html">Lists &amp; pages</a>
+    <a class="" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="" href="xml.html">XML layouts</a>
+    <a class="" href="theming.html">Theming &amp; RTL</a>
+    <a class="" href="performance.html">Performance</a>
+    <a class="" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content">
+<h1 id="getting-started">Getting started<a class="anchor" href="#getting-started" title="Permanent link">#</a></h1>
+<h2 id="requirements">Requirements<a class="anchor" href="#requirements" title="Permanent link">#</a></h2>
+<ul>
+<li>libGDX 1.12.1 or newer (the library is compiled against 1.12.1 and tested on 1.14.2).</li>
+<li>The <code>gdx-freetype</code> extension, used to rasterise text on demand.</li>
+<li>Java 8 language level. Backends: Android and LWJGL3 desktop. GWT/HTML is not supported because FreeType is not available there.</li>
+</ul>
+<h2 id="installation">Installation<a class="anchor" href="#installation" title="Permanent link">#</a></h2>
+<h3 id="option-1-jitpack">Option 1: JitPack<a class="anchor" href="#option-1-jitpack" title="Permanent link">#</a></h3>
+<p>Add the JitPack repository and the dependency to your <strong>core</strong> module:</p>
+<pre class="code" data-lang="groovy"><code class="language-groovy">// settings.gradle or the root build.gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+// core/build.gradle
+dependencies {
+    api 'com.github.star4droid:libgdx-compat:1.0.0'
+    api &quot;com.badlogicgames.gdx:gdx-freetype:$gdxVersion&quot;
+}
+</code></pre>
+<p>The version is the name of a release tag in the GitHub repository.</p>
+<h3 id="option-2-the-jar-file">Option 2: the jar file<a class="anchor" href="#option-2-the-jar-file" title="Permanent link">#</a></h3>
+<p>Download <code>libgdx-compat-1.0.0.jar</code> from the <a href="https://github.com/star4droid/libgdx-compat/releases">releases page</a> (it is also in the <code>dist/</code> folder of the repository), put it in <code>core/libs/</code> and add:</p>
+<pre class="code" data-lang="groovy"><code class="language-groovy">dependencies {
+    api files('libs/libgdx-compat-1.0.0.jar')
+    api &quot;com.badlogicgames.gdx:gdx-freetype:$gdxVersion&quot;
+}
+</code></pre>
+<h3 id="option-3-as-a-module">Option 3: as a module<a class="anchor" href="#option-3-as-a-module" title="Permanent link">#</a></h3>
+<p>Copy the <code>compat</code> folder into your project, add <code>include 'compat'</code> to <code>settings.gradle</code>, and depend on it with <code>api project(':compat')</code>.</p>
+<h3 id="freetype-natives">FreeType natives<a class="anchor" href="#freetype-natives" title="Permanent link">#</a></h3>
+<p>Whichever option you use, every platform needs the FreeType native libraries, exactly as for any libGDX project using fonts:</p>
+<pre class="code" data-lang="groovy"><code class="language-groovy">// desktop/build.gradle
+implementation &quot;com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop&quot;
+
+// android/build.gradle (inside the natives configuration)
+natives &quot;com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a&quot;
+natives &quot;com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a&quot;
+natives &quot;com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64&quot;
+</code></pre>
+<p>The demo's <a href="https://github.com/star4droid/libgdx-compat/blob/main/demo/desktop/build.gradle">desktop</a> and <a href="https://github.com/star4droid/libgdx-compat/blob/main/demo/android/build.gradle">android</a> build files are complete working examples.</p>
+<div class="note"><strong>R8 / ProGuard:</strong> the rules the library needs are shipped inside the jar (<code>META-INF/proguard/libgdx-compat.pro</code>) and are applied automatically when <code>minifyEnabled</code> is on.</div>
+
+<h2 id="your-first-screen">Your first screen<a class="anchor" href="#your-first-screen" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="java"><code class="language-java">public class MyGame extends ApplicationAdapter {
+    private Stage stage;
+
+    @Override
+    public void create () {
+        Compat.init();                        // once, before creating any widget
+        stage = Compat.createStage();         // ScreenViewport + back-key handling
+        Gdx.input.setInputProcessor(stage);
+
+        LinearLayout root = LinearLayout.vertical()
+                .padding(Compat.dp(16))
+                .spacing(Compat.dp(12));
+        root.setFillParent(true);
+        root.setBackground(Compat.theme.surface);
+
+        root.add(new TextView(&quot;Welcome&quot;, Typography.HEADLINE_SMALL));
+        root.add(new EditText(&quot;Your name&quot;).setLeadingIcon(Icons.PERSON)).matchWidth();
+        root.add(new Button(&quot;Continue&quot;).onClick(() -&gt; Gdx.app.log(&quot;ui&quot;, &quot;clicked&quot;)));
+
+        stage.addActor(root);
+    }
+
+    @Override
+    public void resize (int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+
+    @Override
+    public void render () {
+        ScreenUtils.clear(Compat.theme.background);
+        stage.act();
+        stage.draw();
+    }
+
+    @Override
+    public void dispose () {
+        stage.dispose();
+        Compat.dispose();
+    }
+}
+</code></pre>
+<h2 id="units-dp-and-sp">Units: dp and sp<a class="anchor" href="#units-dp-and-sp" title="Permanent link">#</a></h2>
+<p>The library works in real screen pixels with a <code>ScreenViewport</code>. Convert every size with:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Use for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Compat.dp(16)</code></td>
+<td>sizes, margins, paddings (rounded to whole pixels)</td>
+</tr>
+<tr>
+<td><code>Compat.dpf(0.5f)</code></td>
+<td>the same without rounding</td>
+</tr>
+<tr>
+<td><code>Compat.sp(14)</code></td>
+<td>text sizes (also multiplied by <code>fontScale</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p>On Android and iOS the density comes from the device; on desktop it is 1. You can force it:</p>
+<pre class="code" data-lang="java"><code class="language-java">Compat.Config config = new Compat.Config();
+config.density = 2f;
+Compat.init(config);
+</code></pre>
+<div class="note">If your game already uses a viewport with a fixed virtual size (for example 360 × 640), set <code>config.density = stage.getWidth() / 360f</code> so that 1 dp maps to one unit of your design width.</div>
+
+<h2 id="configuration">Configuration<a class="anchor" href="#configuration" title="Permanent link">#</a></h2>
+<p>All fields of <code>Compat.Config</code> are optional:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>density</code></td>
+<td><code>0</code> (automatic)</td>
+<td>pixels per dp</td>
+</tr>
+<tr>
+<td><code>fontScale</code></td>
+<td><code>1</code></td>
+<td>extra multiplier for text sizes</td>
+</tr>
+<tr>
+<td><code>regularFont</code>, <code>mediumFont</code></td>
+<td>IBM Plex Sans Arabic</td>
+<td>any <code>.ttf</code>/<code>.otf</code> file</td>
+</tr>
+<tr>
+<td><code>iconFont</code></td>
+<td>Material Icons</td>
+<td>icon font used by <code>Icons</code></td>
+</tr>
+<tr>
+<td><code>atlasPageSize</code></td>
+<td><code>1024</code></td>
+<td>size of the shared atlas page</td>
+</tr>
+<tr>
+<td><code>rtl</code></td>
+<td><code>false</code></td>
+<td>mirror all layouts for right-to-left languages</td>
+</tr>
+<tr>
+<td><code>dark</code></td>
+<td><code>false</code></td>
+<td>start with the dark theme</td>
+</tr>
+<tr>
+<td><code>catchBackKey</code></td>
+<td><code>true</code></td>
+<td>catch Android BACK so overlays can handle it</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="saving-battery">Saving battery<a class="anchor" href="#saving-battery" title="Permanent link">#</a></h2>
+<p>Components ask for frames only while they animate, so a UI-heavy app can stop drawing when nothing changes:</p>
+<pre class="code" data-lang="java"><code class="language-java">Gdx.graphics.setContinuousRendering(false);
+</code></pre>
+<p>Call <code>Compat.requestRender()</code> yourself when your own code changes something on screen outside an input event.</p>
+<h2 id="the-back-key">The back key<a class="anchor" href="#the-back-key" title="Permanent link">#</a></h2>
+<p><code>Compat.createStage()</code> (or <code>Compat.attach(stage)</code> for an existing stage) routes Android BACK and desktop ESC to the top-most open component: a dialog, a bottom sheet, the drawer, then the <code>Navigator</code>. When nothing consumes it the app exits on Android; set <code>Compat.exitOnBack = false</code> to keep it running.</p>
+    <div class="pager"><a class="prev" href="index.html"><span>Previous</span>Overview</a><a class="next" href="layouts.html"><span>Next</span>Layouts</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/02-getting-started.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#requirements">Requirements</a><a href="#installation">Installation</a><a href="#your-first-screen">Your first screen</a><a href="#units-dp-and-sp">Units: dp and sp</a><a href="#configuration">Configuration</a><a href="#saving-battery">Saving battery</a><a href="#the-back-key">The back key</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

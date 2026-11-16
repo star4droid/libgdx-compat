@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo &amp; testing · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. Demo &amp; testing.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="" href="index.html">Overview</a>
+    <a class="" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="" href="widgets.html">Widgets</a>
+    <a class="" href="lists.html">Lists &amp; pages</a>
+    <a class="" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="" href="xml.html">XML layouts</a>
+    <a class="" href="theming.html">Theming &amp; RTL</a>
+    <a class="" href="performance.html">Performance</a>
+    <a class="active" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content">
+<h1 id="demo-app-testing">Demo app &amp; testing<a class="anchor" href="#demo-app-testing" title="Permanent link">#</a></h1>
+<p>The repository contains a gallery app that shows every component: widgets, inputs, a 100 000-row list, an image grid, an XML screen, a bottom sheet, dialogs, a drawer, theme switching and a screen stack.</p>
+<h2 id="install-the-apk">Install the APK<a class="anchor" href="#install-the-apk" title="Permanent link">#</a></h2>
+<p>Download <code>libgdx-compat-demo.apk</code> from the <a href="https://github.com/star4droid/libgdx-compat/releases/latest">latest release</a> and open it on an Android phone (Android 5.0 or newer). It is a debug build, so Android will ask you to allow installing apps from that source.</p>
+<h2 id="run-from-source">Run from source<a class="anchor" href="#run-from-source" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="bash"><code class="language-bash">git clone https://github.com/star4droid/libgdx-compat.git
+cd libgdx-compat
+
+# desktop gallery
+./gradlew :demo:desktop:run
+./gradlew :demo:desktop:run --args=&quot;--rtl&quot;          # right-to-left mode
+./gradlew :demo:desktop:run --args=&quot;--density 2&quot;    # simulate a phone density
+
+# Android APK (needs an Android SDK: create local.properties with sdk.dir=/path/to/sdk)
+./gradlew :demo:android:assembleDebug
+</code></pre>
+<p>The gallery code is a good reference for real-world usage:</p>
+<ul>
+<li><a href="https://github.com/star4droid/libgdx-compat/blob/main/demo/core/src/main/java/com/star4droid/compat/demo/GalleryApp.java"><code>GalleryApp.java</code></a>: toolbar, tabs, pager, bottom navigation, drawer, FAB, navigator;</li>
+<li><a href="https://github.com/star4droid/libgdx-compat/blob/main/demo/core/src/main/java/com/star4droid/compat/demo/Pages.java"><code>Pages.java</code></a>: each page, list adapters, the bottom sheet content, XML click handlers;</li>
+<li><a href="https://github.com/star4droid/libgdx-compat/blob/main/demo/assets/layouts/demo.xml"><code>demo.xml</code></a>: the XML screen.</li>
+</ul>
+<h2 id="automated-tests">Automated tests<a class="anchor" href="#automated-tests" title="Permanent link">#</a></h2>
+<p><code>run-test.sh</code> starts the desktop gallery off-screen, drives it with scripted touches, key presses and typing, checks the results and saves screenshots to <code>shots/</code>. It needs <code>xvfb</code> on Linux.</p>
+<pre class="code" data-lang="bash"><code class="language-bash">./gradlew :demo:desktop:writeCp
+./run-test.sh tour                     # every component, about 15 behaviour checks
+./run-test.sh inputs                   # text editing, selection, menus, toggles
+./run-test.sh rtl --rtl --out shots/rtl
+./run-test.sh idle                     # frames rendered while idle
+./run-test.sh tour --density 2.625 --size 1080x2340 --out shots/phone
+</code></pre>
+<p>Lines starting with <code>ASSERT</code> report checks, <code>PERF</code> lines report draw calls, frame time and allocation per frame. The scripts live in <a href="https://github.com/star4droid/libgdx-compat/blob/main/demo/desktop/src/main/java/com/star4droid/compat/demo/Scripts.java"><code>Scripts.java</code></a>.</p>
+<h2 id="building-the-library">Building the library<a class="anchor" href="#building-the-library" title="Permanent link">#</a></h2>
+<pre class="code" data-lang="bash"><code class="language-bash">./gradlew :compat:jar          # compat/build/libs/compat-1.0.0.jar
+./gradlew :compat:publishToMavenLocal
+</code></pre>
+<h2 id="third-party-assets">Third-party assets<a class="anchor" href="#third-party-assets" title="Permanent link">#</a></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>License</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IBM Plex Sans Arabic (Regular, Medium)</td>
+<td>SIL Open Font License 1.1</td>
+</tr>
+<tr>
+<td>Material Icons font and code points</td>
+<td>Apache License 2.0</td>
+</tr>
+</tbody>
+</table></div>
+    <div class="pager"><a class="prev" href="performance.html"><span>Previous</span>Performance</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/11-demo.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#install-the-apk">Install the APK</a><a href="#run-from-source">Run from source</a><a href="#automated-tests">Automated tests</a><a href="#building-the-library">Building the library</a><a href="#third-party-assets">Third-party assets</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

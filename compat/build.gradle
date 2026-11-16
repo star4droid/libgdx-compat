@@ -1,0 +1,8 @@
+plugins { id 'java-library'; id 'maven-publish' }
+java { withSourcesJar() }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release = 8; options.compilerArgs << '-Xlint:-options' }
+dependencies {
+    api "com.badlogicgames.gdx:gdx:$gdxApiVersion"
+    api "com.badlogicgames.gdx:gdx-freetype:$gdxApiVersion"
+}
+publishing { publications { maven(MavenPublication) { from components.java; artifactId = 'libgdx-compat' } } }

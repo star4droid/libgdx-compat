@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Performance · libgdx-compat</title>
+<meta name="description" content="libgdx-compat: AppCompat-style Material 3 UI components for libGDX. Performance.">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">&#9776;</button>
+  <a class="brand" href="index.html"><img src="images/favicon.svg" alt=""> libgdx-compat <span class="version">v1.0.0</span></a>
+  <span class="spacer"></span>
+  <button class="theme-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.4 5.4 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8A8.9 8.9 0 0 0 12 3z"/></svg></button>
+  <a class="gh" href="https://github.com/star4droid/libgdx-compat" aria-label="GitHub">GitHub</a>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="" href="index.html">Overview</a>
+    <a class="" href="getting-started.html">Getting started</a>
+    <a class="" href="layouts.html">Layouts</a>
+    <a class="" href="widgets.html">Widgets</a>
+    <a class="" href="lists.html">Lists &amp; pages</a>
+    <a class="" href="overlays.html">Overlays</a>
+    <a class="" href="navigation.html">Navigation</a>
+    <a class="" href="xml.html">XML layouts</a>
+    <a class="" href="theming.html">Theming &amp; RTL</a>
+    <a class="active" href="performance.html">Performance</a>
+    <a class="" href="demo.html">Demo &amp; testing</a>
+    <div class="side-links">
+      <a href="https://github.com/star4droid/libgdx-compat">Source code</a>
+      <a href="https://github.com/star4droid/libgdx-compat/releases">Releases &amp; APK</a>
+      <a href="https://github.com/star4droid/libgdx-compat/issues">Report an issue</a>
+    </div>
+  </nav>
+  <main class="content">
+<h1 id="performance">Performance<a class="anchor" href="#performance" title="Permanent link">#</a></h1>
+<p>libgdx-compat is meant to sit next to a game, so it tries hard to stay out of the frame budget.</p>
+<h2 id="how-it-stays-light">How it stays light<a class="anchor" href="#how-it-stays-light" title="Permanent link">#</a></h2>
+<ul>
+<li><strong>One atlas for everything.</strong> Rounded corners, outlines, shadows, text glyphs and icons live in a single texture page, so the batch rarely flushes. A whole screen usually renders in 1–4 draw calls.</li>
+<li><strong>No shader, no stencil.</strong> Rounded shapes are built from small pre-rendered corner tiles; ripples are scaled copies of the widget's own shape, so they are clipped without scissors.</li>
+<li><strong>Flat scene graph.</strong> Leaf widgets draw themselves instead of nesting labels and images, and layouts never use transform matrices.</li>
+<li><strong>Recycling.</strong> <code>RecyclerView</code> creates the visible rows only, reuses them while scrolling, and a row change never re-lays out the rest of the screen.</li>
+<li><strong>Cached text.</strong> Text is measured, wrapped and shaped once, then drawn from a <code>BitmapFontCache</code>.</li>
+<li><strong>Lazy glyphs.</strong> Only the characters and sizes you use are rasterised.</li>
+<li><strong>Frames on demand.</strong> Components request rendering only while they animate, so <code>setContinuousRendering(false)</code> works out of the box.</li>
+</ul>
+<h2 id="measurements">Measurements<a class="anchor" href="#measurements" title="Permanent link">#</a></h2>
+<p>From the automated tests of the gallery app (desktop, LWJGL3; window 412 × 892 at density 1, and 1080 × 2340 at density 2.625):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Draw calls</th>
+<th>Allocation per frame</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Static screen</td>
+<td>3</td>
+<td>about 60 bytes</td>
+</tr>
+<tr>
+<td>Fling through a 100 000-row list</td>
+<td>3</td>
+<td>about 0.6 KB (text of rows coming into view)</td>
+</tr>
+<tr>
+<td>Fling through a 3-column image grid</td>
+<td>4–5</td>
+<td>about 0.5–1 KB</td>
+</tr>
+<tr>
+<td>3 s idle with continuous rendering off</td>
+<td>0 frames rendered</td>
+<td>–</td>
+</tr>
+</tbody>
+</table></div>
+<p>These numbers come from a desktop GPU; frame times on phones depend on the device, but the draw-call count and allocation rate are the same.</p>
+<h2 id="tips">Tips<a class="anchor" href="#tips" title="Permanent link">#</a></h2>
+<ul>
+<li>Pack small repeated images (avatars, custom icons) with <code>Compat.gfx().pack(pixmap)</code> so they share the atlas.</li>
+<li>Every scrolling container, and every <code>ViewGroup</code> with <code>setClip(true)</code>, adds one or two draw calls for its clip region. Avoid clipping when content already fits.</li>
+<li>Give <code>RecyclerView</code> rows an exact size through <code>Adapter.getItemSize</code> when you know it; it skips measuring.</li>
+<li>Build heavy <code>ViewPager</code> pages lazily with <code>addPage(index -&gt; ...)</code>.</li>
+<li>Reuse <code>Color</code> objects in rows (as the demo's <code>ContactRow</code> does) instead of allocating new ones in <code>bind</code>.</li>
+<li>The atlas page is 1024 × 1024 RGBA (4 MB of GPU memory); a new page is added automatically if it fills up. Raise or lower it with <code>Config.atlasPageSize</code>.</li>
+</ul>
+<h2 id="known-limitations">Known limitations<a class="anchor" href="#known-limitations" title="Permanent link">#</a></h2>
+<ul>
+<li><code>EditText</code> is single-line. In text that mixes Arabic and Latin the cursor position is approximate.</li>
+<li>Arabic diacritics are positioned approximately (libGDX has no access to the font's GPOS table).</li>
+<li>No animations when items are inserted into or removed from a <code>RecyclerView</code>.</li>
+<li>Colour emoji are not supported.</li>
+<li>GWT / HTML5 is not supported because it has no FreeType.</li>
+</ul>
+    <div class="pager"><a class="prev" href="theming.html"><span>Previous</span>Theming &amp; RTL</a><a class="next" href="demo.html"><span>Next</span>Demo &amp; testing</a></div>
+    <footer>libgdx-compat · <a href="https://github.com/star4droid/libgdx-compat/blob/main/docs-src/pages/10-performance.md">Edit this page</a></footer>
+  </main>
+  <aside class="toc"><div class="toc-title">On this page</div><a href="#how-it-stays-light">How it stays light</a><a href="#measurements">Measurements</a><a href="#tips">Tips</a><a href="#known-limitations">Known limitations</a></aside>
+</div>
+<div class="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>
